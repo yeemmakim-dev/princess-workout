@@ -7,13 +7,15 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#FF6B9D">
 <title>공주 수련</title>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--c:#FF69B4;--c2:#FF85C8;--c3:#FFB6D9;--c4:#D8A7FF;--c5:#A0D4FF;--cl:#FFF0F8;--cd:#E0408A;--bg:#FFFAFD;--sf:#FFF2F8;--sf2:#FFECF4;--tx:#3D2040;--tm:#9A7090;--th:#C8A0B8;--bd:rgba(255,105,180,.12);--r:20px;--r2:24px;--glow:0 4px 20px rgba(255,105,180,.15)}
 @media(prefers-color-scheme:dark){:root{--bg:#1C1020;--sf:#281828;--sf2:#321A30;--tx:#F8E8F4;--tm:#B888A8;--th:#7A5068;--bd:rgba(255,105,180,.18);--cl:#301828}}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overscroll-behavior:none}
-body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--tx);background-image:radial-gradient(circle at 20% 20%,rgba(255,182,217,.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(216,167,255,.08) 0%,transparent 50%)}
+body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--tx);background-image:radial-gradient(circle at 20% 20%,rgba(255,182,217,.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(216,167,255,.08) 0%,transparent 50%);font-size:13px}
+.display-font{font-family:'Cormorant Garamond','Gowun Batang',Georgia,serif;font-weight:700}
+.title-font{font-family:'Gowun Batang','Cormorant Garamond',Georgia,serif;font-weight:700}
 #app{max-width:480px;margin:0 auto;min-height:100dvh;padding:env(safe-area-inset-top) 16px 80px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(5deg)}}
@@ -24,16 +26,16 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 
 .tabs{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(255,250,253,0),var(--bg) 20%);border-top:none;display:flex;justify-content:center;z-index:100;padding:8px 0 env(safe-area-inset-bottom);backdrop-filter:blur(10px)}
 .tabs-inner{display:flex;max-width:480px;width:100%}
-.tab{flex:1;padding:8px 0;text-align:center;font-size:10px;color:var(--th);border:none;background:none;cursor:pointer;font-family:inherit;transition:all .2s}
+.tab{flex:1;padding:8px 0;text-align:center;font-size:11px;color:var(--th);border:none;background:none;cursor:pointer;font-family:'Gowun Batang',Georgia,serif;transition:all .2s;letter-spacing:.5px}
 .tab-icon{font-size:22px;display:block;margin-bottom:2px}
 .tab.active{color:var(--c);font-weight:700;transform:scale(1.08)}
 .tab.active .tab-icon{animation:jelly .5s ease}
 
-.header{padding:20px 0 8px;text-align:center;position:relative}
+.header{padding:24px 0 10px;text-align:center;position:relative}
 .header::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(255,105,180,.06) 0%,transparent 70%);pointer-events:none}
-.header h1{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.routine-label{font-size:26px;font-weight:900;margin:6px 0 2px;animation:bounceIn .5s ease}
-.routine-sub{font-size:11px;color:var(--th)}
+.header h1{font-family:'Cormorant Garamond','Gowun Batang',Georgia,serif;font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.routine-label{font-family:'Gowun Batang','Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:700;margin:8px 0 4px;animation:bounceIn .5s ease;letter-spacing:-0.5px;line-height:1.2}
+.routine-sub{font-size:11px;color:var(--th);letter-spacing:.5px}
 
 .cycle-bar{display:flex;gap:5px;margin:14px 0;padding:10px 12px;background:linear-gradient(135deg,var(--sf),var(--sf2));border-radius:var(--r);overflow-x:auto;box-shadow:var(--glow)}
 .cycle-step{flex:1;text-align:center;padding:7px 4px;border-radius:14px;font-size:10px;color:var(--th);line-height:1.3;min-width:0;transition:all .3s}
@@ -54,7 +56,7 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 @media(prefers-color-scheme:dark){.safe-card{background:linear-gradient(150deg,#2A1A28,#241A30,#2A1A2F);border-color:#6B3050}}
 .safe-card.stage-preapproved,.safe-card.stage-approved{border-color:#E8B84E;box-shadow:0 6px 30px rgba(232,184,78,.22),var(--glow)}
 .safe-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px}
-.safe-header-title{font-size:13px;font-weight:900;background:linear-gradient(90deg,var(--c),#C878D0,var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.safe-header-title{font-family:'Gowun Batang','Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:700;background:linear-gradient(90deg,var(--c),#C878D0,var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.3px}
 .safe-header-edit{font-size:11px;color:var(--th);background:none;border:none;cursor:pointer;font-family:inherit}
 .safe-body{padding:0 16px 16px;display:flex;flex-direction:column;align-items:center;gap:12px}
 
@@ -206,7 +208,7 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 @keyframes safeGlowPulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.5}50%{transform:translateX(-50%) scale(1.15);opacity:1}}
 
 /* ---- Stamp ---- */
-.safe-stamp{position:absolute;top:20px;right:-10px;background:linear-gradient(135deg,#FF3E7A,#E8205A);color:#fff;font-size:15px;font-weight:900;padding:8px 18px;border-radius:4px;transform:rotate(12deg) scale(0);transition:transform .4s;box-shadow:0 4px 14px rgba(255,62,122,.35);letter-spacing:2px;border:2.5px solid rgba(255,255,255,.5);z-index:6}
+.safe-stamp{position:absolute;top:20px;right:-10px;background:linear-gradient(135deg,#FF3E7A,#E8205A);color:#fff;font-family:'Gowun Batang',Georgia,serif;font-size:17px;font-weight:700;padding:9px 20px;border-radius:4px;transform:rotate(12deg) scale(0);transition:transform .4s;box-shadow:0 4px 14px rgba(255,62,122,.35);letter-spacing:3px;border:2.5px solid rgba(255,255,255,.5);z-index:6}
 .stage-approved .safe-stamp{transform:rotate(12deg) scale(1);animation:stampPop .5s ease}
 @keyframes stampPop{0%{transform:rotate(12deg) scale(0)}60%{transform:rotate(12deg) scale(1.2)}80%{transform:rotate(12deg) scale(.95)}100%{transform:rotate(12deg) scale(1)}}
 
@@ -218,34 +220,34 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 
 /* ---- Status & Info ---- */
 .safe-status{text-align:center;margin-top:2px}
-.safe-status-badge{display:inline-block;padding:5px 18px;border-radius:20px;font-size:11px;font-weight:900;transition:all .4s}
+.safe-status-badge{display:inline-block;padding:6px 22px;border-radius:20px;font-size:13px;font-weight:900;transition:all .4s;letter-spacing:1px}
 .stage-stored .safe-status-badge{background:rgba(200,180,190,.15);color:var(--th)}
 .stage-review .safe-status-badge{background:rgba(255,105,180,.08);color:var(--c2)}
 .stage-examining .safe-status-badge{background:rgba(255,105,180,.12);color:var(--c)}
 .stage-preapproved .safe-status-badge{background:linear-gradient(135deg,rgba(232,184,78,.18),rgba(255,105,180,.1));color:#C08828;border:1px solid rgba(232,184,78,.35)}
 .stage-approved .safe-status-badge{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;box-shadow:0 3px 10px rgba(255,105,180,.25)}
-.safe-status-sub{font-size:10px;color:var(--th);margin-top:3px}
+.safe-status-sub{font-size:11px;color:var(--th);margin-top:4px;letter-spacing:.3px}
 
 .safe-info{width:100%}
-.safe-price{font-size:13px;color:#C08828;font-weight:700;text-align:center}
-.safe-progress-label{font-size:11px;color:var(--th);margin-top:8px}
+.safe-price{font-family:'Gowun Batang',Georgia,serif;font-size:16px;color:#C08828;font-weight:700;text-align:center;letter-spacing:.5px}
+.safe-progress-label{font-family:'Gowun Batang',Georgia,serif;font-size:12px;color:var(--th);margin-top:10px;font-weight:700;letter-spacing:.5px}
 .safe-progress-wrap{display:flex;align-items:center;gap:8px;margin-top:4px}
 .safe-progress-bar{flex:1;height:10px;background:var(--bd);border-radius:5px;overflow:hidden}
 .safe-progress-fill{height:100%;border-radius:5px;transition:width .5s;background:linear-gradient(90deg,var(--c3),var(--c),var(--c4))}
 .stage-preapproved .safe-progress-fill,.stage-approved .safe-progress-fill{background:linear-gradient(90deg,var(--c),#E8B84E,#FFD700)}
-.safe-progress-pct{font-size:13px;font-weight:900;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:36px;text-align:right}
+.safe-progress-pct{font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:700;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:36px;text-align:right}
 
 .safe-comment{font-size:11px;color:var(--tm);margin-top:8px;padding:8px 12px;background:rgba(255,105,180,.04);border-radius:10px;line-height:1.5;border-left:3px solid var(--c3);font-style:italic;text-align:left}
 .safe-days-left{font-size:10px;color:var(--th);margin-top:6px;text-align:center}
 .safe-swaps{font-size:10px;color:var(--th);margin-top:3px;text-align:center}
 
-.safe-cta{margin-top:10px;padding:14px;background:linear-gradient(135deg,#E8B84E,#FFD700);color:#5A3A00;border:none;border-radius:16px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;width:100%;box-shadow:0 4px 15px rgba(232,184,78,.35);transition:transform .15s;letter-spacing:.5px}
+.safe-cta{margin-top:10px;padding:15px;background:linear-gradient(135deg,#E8B84E,#FFD700);color:#5A3A00;border:none;border-radius:16px;font-family:'Gowun Batang',Georgia,serif;font-size:16px;font-weight:700;cursor:pointer;width:100%;box-shadow:0 4px 15px rgba(232,184,78,.35);transition:transform .15s;letter-spacing:1px}
 .safe-cta:active{transform:scale(.94)}
 
 /* Upload empty state */
 .safe-upload{padding:28px 20px;text-align:center;cursor:pointer}
 .safe-upload-icon{font-size:44px;margin-bottom:8px;animation:floaty 3s ease-in-out infinite}
-.safe-upload-title{font-size:14px;font-weight:900;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.safe-upload-title{font-family:'Gowun Batang','Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:700;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;letter-spacing:.3px}
 .safe-upload-text{font-size:12px;color:var(--th);line-height:1.8}
 .safe-upload-text b{color:var(--c);display:block;margin-top:6px;font-size:14px;font-weight:700}
 
@@ -253,7 +255,7 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 .ex-card{background:linear-gradient(135deg,var(--sf),#FDF0FF);border-radius:var(--r);padding:16px;transition:all .3s;border:2.5px solid transparent;box-shadow:0 2px 12px rgba(255,105,180,.06)}
 .ex-card.done{opacity:.4;border-color:var(--c3);background:var(--sf2)}
 .ex-card.done .ex-name{text-decoration:line-through;color:var(--c)}
-.ex-name{font-size:15px;font-weight:900;margin-bottom:3px;color:var(--tx)}
+.ex-name{font-family:'Gowun Batang',Georgia,serif;font-size:16px;font-weight:700;margin-bottom:4px;color:var(--tx)}
 .ex-desc{font-size:11px;color:var(--th);margin-bottom:10px}
 .ex-sets{display:flex;gap:8px;flex-wrap:wrap}
 .set-btn{width:40px;height:40px;border-radius:50%;border:3px solid var(--c3);background:var(--bg);font-size:12px;font-weight:900;color:var(--c);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:inherit;box-shadow:0 2px 8px rgba(255,105,180,.08)}
@@ -275,21 +277,21 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 .progress-text{font-size:11px;color:var(--th);text-align:center;margin-bottom:12px;font-weight:500}
 
 .walk-card{text-align:center;padding:40px 16px;margin:16px 0;background:linear-gradient(135deg,var(--cl),#F0E8FF);border-radius:var(--r2);border:2.5px dashed var(--c3);box-shadow:var(--glow)}
-.walk-card h2{font-size:22px;margin-bottom:8px;font-weight:900}
+.walk-card h2{font-family:'Gowun Batang',Georgia,serif;font-size:26px;margin-bottom:10px;font-weight:700}
 .walk-card p{font-size:13px;color:var(--tm);line-height:1.5;margin-bottom:16px}
 
 .done-card{text-align:center;padding:36px 16px;margin:16px 0;animation:bounceIn .5s ease}
-.done-card h2{font-size:28px;margin-bottom:8px;animation:jelly .8s ease}
+.done-card h2{font-family:'Gowun Batang',Georgia,serif;font-size:32px;margin-bottom:10px;font-weight:700;animation:jelly .8s ease}
 .done-card p{font-size:13px;color:var(--tm);margin-bottom:20px;line-height:1.5}
 .done-btns{display:flex;flex-direction:column;gap:10px}
-.btn-primary{padding:16px;background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;width:100%;box-shadow:0 6px 20px rgba(255,105,180,.3);transition:all .15s;letter-spacing:.5px}
+.btn-primary{padding:16px;background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;border:none;border-radius:var(--r);font-family:'Gowun Batang',Georgia,serif;font-size:16px;font-weight:700;cursor:pointer;width:100%;box-shadow:0 6px 20px rgba(255,105,180,.3);transition:all .15s;letter-spacing:1px}
 .btn-primary:active{transform:scale(.96);box-shadow:0 3px 10px rgba(255,105,180,.2)}
 .btn-ghost{padding:14px;background:rgba(255,105,180,.05);border:2.5px solid var(--c3);border-radius:var(--r);font-size:14px;color:var(--c);cursor:pointer;font-family:inherit;width:100%;font-weight:600;transition:all .15s}
 .btn-ghost:active{transform:scale(.96);background:rgba(255,105,180,.1)}
 .btn-skip{padding:12px;background:var(--sf);border:2.5px dashed var(--c3);border-radius:var(--r);font-size:13px;color:var(--th);cursor:pointer;font-family:inherit;width:100%;margin-top:4px;transition:all .15s}
 .btn-skip:active{transform:scale(.96)}
 
-.cal-month{text-align:center;font-size:18px;font-weight:900;margin:20px 0 14px;display:flex;align-items:center;justify-content:center;gap:14px}
+.cal-month{text-align:center;font-family:'Gowun Batang',Georgia,serif;font-size:20px;font-weight:700;margin:20px 0 14px;display:flex;align-items:center;justify-content:center;gap:14px;letter-spacing:.5px}
 .cal-nav{background:linear-gradient(135deg,var(--sf),var(--sf2));border:2px solid var(--c3);font-size:16px;cursor:pointer;color:var(--c);padding:6px 12px;border-radius:12px;transition:all .15s}
 .cal-nav:active{transform:scale(.9)}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:16px}
@@ -306,7 +308,7 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 .cal-detail-item{font-size:12px;color:var(--tm);padding:5px 0}
 
 .wt-current{text-align:center;padding:24px 0}
-.wt-current .wt-num{font-size:48px;font-weight:900;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wt-current .wt-num{font-family:'Cormorant Garamond','Gowun Batang',Georgia,serif;font-size:54px;font-weight:700;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .wt-current .wt-unit{font-size:14px;color:var(--tm);font-weight:500}
 .wt-input-row{display:flex;gap:8px;margin:0 0 16px;align-items:center}
 .wt-input-row input{flex:1;border:2.5px solid var(--c3);border-radius:var(--r);padding:14px;font-size:16px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit;transition:all .2s}
