@@ -49,34 +49,112 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 .weight-row button{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;border:none;border-radius:12px;padding:7px 16px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 3px 10px rgba(255,105,180,.25);transition:transform .15s}
 .weight-row button:active{transform:scale(.92)}
 
-/* Reward - Royal Purchase */
-.reward{margin:14px 0;border-radius:var(--r2);overflow:hidden;position:relative;background:linear-gradient(135deg,#FFF0F8,#F0E4FF,#E4F0FF);border:2.5px solid var(--c3);box-shadow:var(--glow)}
-@media(prefers-color-scheme:dark){.reward{background:linear-gradient(135deg,#2A1A28,#241A30,#1A2030);border-color:#6B3050}}
-.reward-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 0}
-.reward-title{font-size:13px;font-weight:900;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.reward-edit{font-size:11px;color:var(--th);background:none;border:none;cursor:pointer;font-family:inherit}
-.reward-body{padding:10px 14px 14px;display:flex;gap:12px;align-items:flex-start}
-.reward-img-wrap{width:78px;height:78px;border-radius:16px;overflow:hidden;position:relative;flex-shrink:0;background:#fff;border:3px solid var(--c3);transition:all .3s}
-.reward-img-wrap img{width:100%;height:100%;object-fit:cover}
-.reward-locked .reward-img-wrap{filter:grayscale(.8) brightness(1.1);border-color:var(--th);border-style:dashed}
-.reward-locked .reward-img-wrap::after{content:'';position:absolute;bottom:-2px;right:-2px;font-size:18px;background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,165,0,.3);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z'/%3E%3C/svg%3E");background-size:16px;background-repeat:no-repeat;background-position:center}
-.reward-unlocked .reward-img-wrap{border:3px solid transparent;background-image:linear-gradient(#fff,#fff),linear-gradient(135deg,var(--c),var(--c4),var(--c5),var(--c));background-origin:border-box;background-clip:content-box,border-box;box-shadow:0 0 0 4px rgba(255,105,180,.15),0 0 25px rgba(255,105,180,.2),0 0 50px rgba(216,167,255,.15);animation:rewardPulse 2s infinite}
-@keyframes rewardPulse{0%,100%{box-shadow:0 0 0 4px rgba(255,105,180,.15),0 0 25px rgba(255,105,180,.2)}50%{box-shadow:0 0 0 6px rgba(255,105,180,.25),0 0 35px rgba(255,105,180,.35),0 0 60px rgba(216,167,255,.2)}}
-.reward-info{flex:1;min-width:0}
-.reward-month{font-size:11px;color:var(--th);margin-bottom:4px}
-.reward-progress{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.reward-bar{flex:1;height:10px;background:var(--bd);border-radius:5px;overflow:hidden}
-.reward-bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--c3),var(--c),var(--c4));transition:width .4s}
-.reward-pct{font-size:13px;font-weight:900;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.reward-msg{font-size:11px;color:var(--tm);line-height:1.4}
-.reward-skip-info{font-size:10px;color:var(--th);margin-top:3px}
-.reward-upload{padding:28px 20px;text-align:center;cursor:pointer}
-.reward-upload-icon{font-size:40px;margin-bottom:6px;animation:floaty 3s ease-in-out infinite}
-.reward-upload-text{font-size:12px;color:var(--th);line-height:1.8}
-.reward-upload-text b{color:var(--c);display:block;margin-top:6px;font-size:14px;font-weight:700}
-.reward-price{font-size:12px;color:var(--c);font-weight:700;margin-top:2px}
-.reward-comment{font-size:11px;color:var(--tm);margin-top:6px;padding:8px 10px;background:rgba(255,105,180,.04);border-radius:10px;line-height:1.5;border-left:3px solid var(--c3);font-style:italic}
-.reward-days-left{font-size:10px;color:var(--th);margin-top:4px}
+/* ========== Royal Pink Safe Card ========== */
+.safe-card{margin:14px 0;border-radius:var(--r2);overflow:hidden;position:relative;background:linear-gradient(145deg,#FFF0F8,#F5E8FF,#FCEEFF);border:2.5px solid var(--c3);box-shadow:var(--glow);transition:all .4s}
+@media(prefers-color-scheme:dark){.safe-card{background:linear-gradient(145deg,#2A1A28,#241A30,#2A1A2F);border-color:#6B3050}}
+.safe-card.stage-preapproved,.safe-card.stage-approved{border-color:#E8B84E;box-shadow:0 4px 24px rgba(232,184,78,.2),var(--glow)}
+.safe-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px}
+.safe-header-title{font-size:13px;font-weight:900;background:linear-gradient(90deg,var(--c),#C878D0,var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.safe-header-edit{font-size:11px;color:var(--th);background:none;border:none;cursor:pointer;font-family:inherit}
+.safe-body{padding:0 16px 16px;display:flex;flex-direction:column;align-items:center;gap:14px}
+
+/* --- The Safe --- */
+.safe-box{width:160px;height:170px;position:relative;margin:0 auto}
+.safe-body-shell{width:100%;height:100%;border-radius:22px;position:relative;overflow:hidden;transition:all .5s;
+  background:linear-gradient(160deg,#F5D5E8 0%,#EABDD4 30%,#DAAEC6 70%,#D4A0BC 100%);
+  border:3px solid #E8B84E;
+  box-shadow:inset 0 2px 8px rgba(255,255,255,.4),inset 0 -4px 10px rgba(180,100,140,.15),0 6px 20px rgba(200,120,160,.15)}
+.stage-stored .safe-body-shell{background:linear-gradient(160deg,#E8D8E0 0%,#D8C8D0 30%,#D0C0C8 70%,#C8B8C0 100%);border-color:#C0A880;box-shadow:inset 0 2px 6px rgba(255,255,255,.2),0 4px 12px rgba(160,140,150,.1)}
+.stage-review .safe-body-shell{background:linear-gradient(160deg,#F0D0E0 0%,#E4C0D2 30%,#D8B0C4 70%,#D0A8BC 100%);border-color:#D0A860}
+.stage-examining .safe-body-shell{background:linear-gradient(160deg,#F5D0E5 0%,#EABED4 30%,#E0B0C8 70%,#D8A4BC 100%);border-color:#DDB050}
+.stage-preapproved .safe-body-shell{background:linear-gradient(160deg,#FFD4EC 0%,#F0B8D8 30%,#E8A8CC 70%,#E498C0 100%);border-color:#E8B84E;box-shadow:inset 0 2px 10px rgba(255,255,255,.5),0 0 20px rgba(255,105,180,.15),0 6px 20px rgba(232,184,78,.15)}
+.stage-approved .safe-body-shell{background:linear-gradient(160deg,#FFD8F0 0%,#FFC0E4 30%,#FFB0D8 70%,#FFA0CC 100%);border-color:#E8B84E;box-shadow:inset 0 2px 12px rgba(255,255,255,.6),0 0 30px rgba(255,105,180,.25),0 0 50px rgba(232,184,78,.15)}
+
+/* Gold trim lines */
+.safe-body-shell::before{content:'';position:absolute;top:8px;left:8px;right:8px;bottom:8px;border:1.5px solid rgba(232,184,78,.35);border-radius:16px;pointer-events:none;transition:border-color .4s}
+.stage-preapproved .safe-body-shell::before,.stage-approved .safe-body-shell::before{border-color:rgba(232,184,78,.6)}
+/* Gold bottom strip */
+.safe-body-shell::after{content:'';position:absolute;bottom:0;left:0;right:0;height:18px;background:linear-gradient(180deg,transparent,rgba(232,184,78,.12));pointer-events:none}
+
+/* --- Heart Window --- */
+.safe-heart{position:absolute;top:24px;left:50%;transform:translateX(-50%);width:90px;height:85px;overflow:hidden;transition:all .5s}
+.safe-heart-clip{width:100%;height:100%;clip-path:path('M45 78 C45 78 5 50 5 28 C5 14 16 4 30 4 C38 4 44 8 45 14 C46 8 52 4 60 4 C74 4 85 14 85 28 C85 50 45 78 45 78Z');overflow:hidden;position:relative;border-radius:0}
+.safe-heart-img{width:100%;height:100%;object-fit:cover;transition:all .5s}
+.stage-stored .safe-heart-img{filter:grayscale(.85) brightness(.8) blur(3px)}
+.stage-review .safe-heart-img{filter:grayscale(.5) brightness(.88) blur(1.5px)}
+.stage-examining .safe-heart-img{filter:grayscale(.2) brightness(.94) blur(.5px)}
+.stage-preapproved .safe-heart-img{filter:grayscale(0) brightness(1)}
+.stage-approved .safe-heart-img{filter:grayscale(0) brightness(1.05) saturate(1.1)}
+/* Heart border (gold) */
+.safe-heart::after{content:'';position:absolute;inset:0;background:transparent;clip-path:path('M45 78 C45 78 5 50 5 28 C5 14 16 4 30 4 C38 4 44 8 45 14 C46 8 52 4 60 4 C74 4 85 14 85 28 C85 50 45 78 45 78Z');box-shadow:inset 0 0 0 2.5px #E8B84E;pointer-events:none}
+/* Glass overlay */
+.safe-heart-glass{position:absolute;inset:0;clip-path:path('M45 78 C45 78 5 50 5 28 C5 14 16 4 30 4 C38 4 44 8 45 14 C46 8 52 4 60 4 C74 4 85 14 85 28 C85 50 45 78 45 78Z');background:linear-gradient(135deg,rgba(255,255,255,.35) 0%,transparent 50%,rgba(255,255,255,.1) 100%);pointer-events:none;transition:opacity .4s}
+.stage-preapproved .safe-heart-glass,.stage-approved .safe-heart-glass{opacity:.4}
+
+/* --- Lock --- */
+.safe-lock{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:32px;height:32px;transition:all .4s}
+.safe-lock-body{width:24px;height:18px;background:linear-gradient(180deg,#E8B84E,#D4A040);border-radius:5px;position:absolute;bottom:0;left:50%;transform:translateX(-50%);box-shadow:0 2px 6px rgba(200,160,60,.3)}
+.safe-lock-body::after{content:'';width:6px;height:6px;border-radius:50%;background:#A07820;position:absolute;top:5px;left:50%;transform:translateX(-50%)}
+.safe-lock-shackle{width:16px;height:14px;border:3px solid #E8B84E;border-bottom:none;border-radius:8px 8px 0 0;position:absolute;bottom:14px;left:50%;transform:translateX(-50%);transition:all .4s}
+.stage-preapproved .safe-lock-shackle{transform:translateX(-50%) rotate(-15deg);transform-origin:bottom right}
+.stage-approved .safe-lock{opacity:0;transform:translateX(-50%) scale(.5) translateY(10px)}
+
+/* --- Door open effect (approved) --- */
+.safe-door-open{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s}
+.stage-approved .safe-door-open{opacity:1}
+.safe-glow{position:absolute;top:40px;left:50%;transform:translateX(-50%);width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,100,.3),rgba(255,105,180,.15),transparent 70%);animation:safeGlowPulse 2s ease-in-out infinite}
+@keyframes safeGlowPulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.6}50%{transform:translateX(-50%) scale(1.15);opacity:1}}
+
+/* --- Stamp --- */
+.safe-stamp{position:absolute;top:12px;right:-5px;background:linear-gradient(135deg,#FF3E7A,#E8205A);color:#fff;font-size:13px;font-weight:900;padding:6px 14px;border-radius:4px;transform:rotate(12deg) scale(0);transition:transform .4s;box-shadow:0 3px 10px rgba(255,62,122,.3);letter-spacing:1px;border:2px solid rgba(255,255,255,.4);z-index:2}
+.stage-approved .safe-stamp{transform:rotate(12deg) scale(1);animation:stampPop .5s ease}
+@keyframes stampPop{0%{transform:rotate(12deg) scale(0)}60%{transform:rotate(12deg) scale(1.2)}80%{transform:rotate(12deg) scale(.95)}100%{transform:rotate(12deg) scale(1)}}
+
+/* --- Sparkles on safe --- */
+.safe-sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.safe-sparkle{position:absolute;font-size:10px;opacity:0;animation:safeSparkle 2.5s ease-in-out infinite}
+@keyframes safeSparkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:1;transform:scale(1)}}
+.stage-stored .safe-sparkles{display:none}
+.stage-review .safe-sparkle{animation-duration:4s}
+
+/* --- Status & Info --- */
+.safe-status{text-align:center;margin-top:2px}
+.safe-status-badge{display:inline-block;padding:4px 16px;border-radius:20px;font-size:11px;font-weight:900;transition:all .4s}
+.stage-stored .safe-status-badge{background:rgba(200,180,190,.15);color:var(--th)}
+.stage-review .safe-status-badge{background:rgba(255,105,180,.08);color:var(--c2)}
+.stage-examining .safe-status-badge{background:rgba(255,105,180,.12);color:var(--c)}
+.stage-preapproved .safe-status-badge{background:linear-gradient(135deg,rgba(232,184,78,.15),rgba(255,105,180,.1));color:#D09830;border:1px solid rgba(232,184,78,.3)}
+.stage-approved .safe-status-badge{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;box-shadow:0 3px 10px rgba(255,105,180,.25)}
+.safe-status-sub{font-size:10px;color:var(--th);margin-top:3px}
+
+.safe-info{width:100%}
+.safe-price{font-size:12px;color:#D09830;font-weight:700;text-align:center}
+.safe-progress-label{font-size:11px;color:var(--th);margin-top:8px}
+.safe-progress-wrap{display:flex;align-items:center;gap:8px;margin-top:4px}
+.safe-progress-bar{flex:1;height:10px;background:var(--bd);border-radius:5px;overflow:hidden}
+.safe-progress-fill{height:100%;border-radius:5px;transition:width .5s;background:linear-gradient(90deg,var(--c3),var(--c),var(--c4))}
+.stage-preapproved .safe-progress-fill,.stage-approved .safe-progress-fill{background:linear-gradient(90deg,var(--c),#E8B84E,#FFD700)}
+.safe-progress-pct{font-size:13px;font-weight:900;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:36px;text-align:right}
+
+/* Heart key progress */
+.safe-hearts{display:flex;gap:3px;justify-content:center;margin-top:6px}
+.safe-heart-key{font-size:14px;opacity:.2;transition:all .3s}
+.safe-heart-key.filled{opacity:1;animation:heartFill .3s ease}
+@keyframes heartFill{0%{transform:scale(.5)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+
+.safe-comment{font-size:11px;color:var(--tm);margin-top:8px;padding:8px 12px;background:rgba(255,105,180,.04);border-radius:10px;line-height:1.5;border-left:3px solid var(--c3);font-style:italic;text-align:left}
+.safe-days-left{font-size:10px;color:var(--th);margin-top:6px;text-align:center}
+.safe-swaps{font-size:10px;color:var(--th);margin-top:3px;text-align:center}
+
+.safe-cta{margin-top:10px;padding:14px;background:linear-gradient(135deg,#E8B84E,#FFD700);color:#5A3A00;border:none;border-radius:16px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;width:100%;box-shadow:0 4px 15px rgba(232,184,78,.35);transition:transform .15s;letter-spacing:.5px}
+.safe-cta:active{transform:scale(.94)}
+
+/* Upload empty state */
+.safe-upload{padding:28px 20px;text-align:center;cursor:pointer}
+.safe-upload-icon{font-size:44px;margin-bottom:8px;animation:floaty 3s ease-in-out infinite}
+.safe-upload-title{font-size:14px;font-weight:900;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.safe-upload-text{font-size:12px;color:var(--th);line-height:1.8}
+.safe-upload-text b{color:var(--c);display:block;margin-top:6px;font-size:14px;font-weight:700}
 
 .ex-list{display:flex;flex-direction:column;gap:10px;margin:10px 0}
 .ex-card{background:linear-gradient(135deg,var(--sf),#FDF0FF);border-radius:var(--r);padding:16px;transition:all .3s;border:2.5px solid transparent;box-shadow:0 2px 12px rgba(255,105,180,.06)}
@@ -540,6 +618,42 @@ function renderWorkout(){
   setTimeout(restoreRestUI,50);
 }
 
+// ========== Royal Pink Safe Card ==========
+var SAFE_STAGES=[
+  {key:'stored',label:'보관 중',sub:'왕실 보관 중',max:19},
+  {key:'review',label:'심사 중',sub:'심사 진행 중',max:44},
+  {key:'examining',label:'검토 중',sub:'구매 허가 검토 중',max:74},
+  {key:'preapproved',label:'승인 직전',sub:'예비 승인 완료',max:99},
+  {key:'approved',label:'사도 됨',sub:'구매 허가 승인',max:100}
+];
+var SAFE_COMMENTS_LOCKED=[
+  '아직 왕실 허가가 나지 않았어요.',
+  '심사 자료를 수집하고 있어요.',
+  '왕실도 슬슬 납득 중이에요.',
+  '이제 정말 거의 다 왔어요.',
+  '공주님의 꾸준함에 감동 중...'
+];
+var SAFE_COMMENTS_APPROVED=[
+  '이제 사도 아무도 뭐라 안 함.',
+  '공주님의 꾸준함이 이 소비를 정당화했습니다.',
+  '이 아이템은 이제 공주님의 것입니다.',
+  '오늘부터 이건 사치가 아니라 보상입니다.',
+  '장바구니 말고 이제 진짜 데려오세요.'
+];
+function getSafeStage(pct){
+  for(var i=0;i<SAFE_STAGES.length;i++){if(pct<=SAFE_STAGES[i].max)return SAFE_STAGES[i]}
+  return SAFE_STAGES[4];
+}
+function getSafeComment(pct,count){
+  if(pct>=100){
+    var idx=((count*3571+7)%SAFE_COMMENTS_APPROVED.length+SAFE_COMMENTS_APPROVED.length)%SAFE_COMMENTS_APPROVED.length;
+    return SAFE_COMMENTS_APPROVED[idx];
+  }
+  // map count to comment pool
+  var ci=Math.min(Math.floor(count/4), SAFE_COMMENTS_LOCKED.length-1);
+  return SAFE_COMMENTS_LOCKED[ci];
+}
+
 function renderReward(){
   var h='';
   var count=getMonthCount();
@@ -550,38 +664,106 @@ function renderReward(){
   var ml=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'][now.getMonth()];
   var swapsLeft=SWAP_MAX-swaps;
   var daysLeft=getDaysLeftInMonth();
+  var stage=getSafeStage(pct);
 
   if(!S.reward.img){
-    h+='<div class="reward"><div class="reward-upload" onclick="showPriceUpload()">';
-    h+='<div class="reward-upload-icon">👑</div>';
-    h+='<div style="font-size:14px;font-weight:900;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px">'+ml+' 왕실 구매 심사 품목</div>';
-    h+='<div class="reward-upload-text">공주님의 다음 보상을 기다리고 있어요<b>👑 왕실 구매 심사 제출하기</b></div>';
+    // Empty state — upload prompt
+    h+='<div class="safe-card stage-stored">';
+    h+='<div class="safe-upload" onclick="showPriceUpload()">';
+    h+='<div class="safe-upload-icon">👑</div>';
+    h+='<div class="safe-upload-title">'+ml+' 왕실 구매 심사 품목</div>';
+    h+='<div class="safe-upload-text">공주님의 다음 보상을 기다리고 있어요<b>👑 왕실 구매 심사 제출하기</b></div>';
     h+='</div></div>';
   } else {
-    var state=unlocked?'reward-unlocked':'reward-locked';
-    h+='<div class="reward '+state+'">';
-    h+='<div class="reward-header">';
-    h+='<span class="reward-title">'+(unlocked?'🎉 왕실 구매 허가 완료! 🛒':'👑 '+ml+' 왕실 구매 심사 품목')+'</span>';
-    h+='<button class="reward-edit" onclick="changeReward()">변경</button>';
-    h+='</div><div class="reward-body">';
-    h+='<div class="reward-img-wrap"><img src="'+S.reward.img+'">';
-    h+='</div><div class="reward-info">';
-    if(S.reward.price) h+='<div class="reward-price">💰 '+S.reward.price+'</div>';
-    h+='<div class="reward-month">소비 정당화 게이지:</div>';
-    h+='<div class="reward-progress">';
-    h+='<div class="reward-bar"><div class="reward-bar-fill" style="width:'+pct+'%"></div></div>';
-    h+='<span class="reward-pct">'+pct+'%</span>';
+    // --- The Safe Card ---
+    h+='<div class="safe-card stage-'+stage.key+'">';
+    h+='<div class="safe-header">';
+    h+='<span class="safe-header-title">'+(unlocked?'🎉 구매 허가 승인':'👑 '+ml+' 왕실 구매 심사 품목')+'</span>';
+    h+='<button class="safe-header-edit" onclick="changeReward()">변경</button>';
     h+='</div>';
+    h+='<div class="safe-body">';
+
+    // --- Safe visual ---
+    h+='<div class="safe-box">';
+    h+='<div class="safe-body-shell">';
+
+    // Heart window with item image
+    h+='<div class="safe-heart">';
+    h+='<div class="safe-heart-clip">';
+    h+='<img class="safe-heart-img" src="'+S.reward.img+'">';
+    h+='</div>';
+    h+='<div class="safe-heart-glass"></div>';
+    h+='</div>';
+
+    // Lock
+    h+='<div class="safe-lock"><div class="safe-lock-shackle"></div><div class="safe-lock-body"></div></div>';
+
+    // Sparkles
+    h+='<div class="safe-sparkles">';
+    var sparklePos=[[15,20],[75,15],[85,55],[20,65],[50,8],[60,70]];
+    var sparkleChars=['✦','♡','✧','⋆','✦','♡'];
+    for(var i=0;i<sparklePos.length;i++){
+      h+='<span class="safe-sparkle" style="left:'+sparklePos[i][0]+'%;top:'+sparklePos[i][1]+'%;animation-delay:'+(i*0.4)+'s">'+sparkleChars[i]+'</span>';
+    }
+    h+='</div>';
+
+    // Door open glow (only visible when approved)
+    h+='<div class="safe-door-open"><div class="safe-glow"></div></div>';
+
+    // Stamp
+    h+='<div class="safe-stamp">사도 됨</div>';
+
+    h+='</div>'; // safe-body-shell
+    h+='</div>'; // safe-box
+
+    // --- Status badge ---
+    h+='<div class="safe-status">';
+    h+='<div class="safe-status-badge">'+stage.label+'</div>';
+    h+='<div class="safe-status-sub">'+stage.sub+'</div>';
+    h+='</div>';
+
+    // --- Info section ---
+    h+='<div class="safe-info">';
+
+    // Price
+    if(S.reward.price) h+='<div class="safe-price">💰 '+S.reward.price+'</div>';
+
+    // Progress bar
+    h+='<div class="safe-progress-label">소비 정당화 게이지</div>';
+    h+='<div class="safe-progress-wrap">';
+    h+='<div class="safe-progress-bar"><div class="safe-progress-fill" style="width:'+pct+'%"></div></div>';
+    h+='<span class="safe-progress-pct">'+pct+'%</span>';
+    h+='</div>';
+
+    // Heart key progress
+    var heartTotal=5;
+    var heartFilled=Math.min(heartTotal,Math.floor(pct/20));
+    if(pct>=100) heartFilled=heartTotal;
+    h+='<div class="safe-hearts">';
+    for(var k=0;k<heartTotal;k++){
+      h+='<span class="safe-heart-key'+(k<heartFilled?' filled':'')+'">🔑</span>';
+    }
+    h+='</div>';
+
+    // Days/count left or CTA
     if(unlocked){
-      h+='<div class="reward-msg">🥳 왕실이 구매를 허가했어요! 사세요!!</div>';
+      h+='<button class="safe-cta" onclick="toast(\'장바구니 말고 진짜 데려오세요! 👑\')">👑 구매 허가 승인 완료!</button>';
     } else {
-      h+='<div class="reward-days-left">이번 달 완주까지 '+(GOAL-count)+'회 남음 · '+daysLeft+'일 남음</div>';
+      h+='<div class="safe-days-left">완주까지 '+(GOAL-count)+'회 남음 · '+daysLeft+'일 남음</div>';
     }
-    if(count>0&&!unlocked){
-      h+='<div class="reward-comment">💬 '+getRoyalComment(count)+'</div>';
+
+    // Royal comment
+    if(count>0){
+      var comment=unlocked?getSafeComment(100,count):(getRoyalComment(count));
+      h+='<div class="safe-comment">💬 '+comment+'</div>';
     }
-    h+='<div class="reward-skip-info">🔄 운동 변경 '+swaps+'/'+SWAP_MAX+'회'+(swapsLeft>0?' ('+swapsLeft+'번 남음)':' (소진)')+'</div>';
-    h+='</div></div></div>';
+
+    // Swap info
+    h+='<div class="safe-swaps">🔄 운동 변경 '+swaps+'/'+SWAP_MAX+'회'+(swapsLeft>0?' ('+swapsLeft+'번 남음)':' (소진)')+'</div>';
+
+    h+='</div>'; // safe-info
+    h+='</div>'; // safe-body
+    h+='</div>'; // safe-card
   }
   return h;
 }
