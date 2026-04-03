@@ -224,7 +224,7 @@ body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:var(--bg);co
 .stage-stored .safe-status-badge{background:rgba(200,180,190,.15);color:var(--th)}
 .stage-review .safe-status-badge{background:rgba(255,105,180,.08);color:var(--c2)}
 .stage-examining .safe-status-badge{background:rgba(255,105,180,.12);color:var(--c)}
-.stage-preapproved .safe-status-badge{background:linear-gradient(135deg,rgba(232,184,78,.18),rgba(255,105,180,.1));color:#C08828;border:1px solid rgba(232,184,78,.35)}
+.stage-preapproved .safe-status-badge{background:linear-gradient(135deg,rgba(232,184,78,.18),rgba(255,105,180,.1));color:#C08828;border:1px solid rgba(232,184,78,.35);font-weight:500}
 .stage-approved .safe-status-badge{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;box-shadow:0 3px 10px rgba(255,105,180,.25)}
 .safe-status-sub{font-size:11px;color:var(--th);margin-top:4px;letter-spacing:.3px}
 
@@ -718,7 +718,7 @@ var SAFE_STAGES=[
   {key:'stored',label:'보관 중',sub:'왕실 보관 중',max:19},
   {key:'review',label:'심사 중',sub:'심사 진행 중',max:44},
   {key:'examining',label:'검토 중',sub:'구매 허가 검토 중',max:74},
-  {key:'preapproved',label:'승인 직전',sub:'예비 승인 완료',max:99},
+  {key:'preapproved',label:'승인 직전',sub:'',max:99},
   {key:'approved',label:'사도 됨',sub:'구매 허가 승인',max:100}
 ];
 var SAFE_COMMENTS_LOCKED=[
