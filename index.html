@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#FF6B9D">
+<title>공주 수련</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--c:#FF69B4;--c2:#FF85C8;--c3:#FFB6D9;--c4:#D8A7FF;--c5:#A0D4FF;--cl:#FFF0F8;--cd:#E0408A;--bg:#FFFAFD;--sf:#FFF2F8;--sf2:#FFECF4;--tx:#3D2040;--tm:#9A7090;--th:#C8A0B8;--bd:rgba(255,105,180,.12);--r:20px;--r2:24px;--glow:0 4px 20px rgba(255,105,180,.15)}
+@media(prefers-color-scheme:dark){:root{--bg:#1C1020;--sf:#281828;--sf2:#321A30;--tx:#F8E8F4;--tm:#B888A8;--th:#7A5068;--bd:rgba(255,105,180,.18);--cl:#301828}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overscroll-behavior:none}
+body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--tx);background-image:radial-gradient(circle at 20% 20%,rgba(255,182,217,.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(216,167,255,.08) 0%,transparent 50%)}
+#app{max-width:480px;margin:0 auto;min-height:100dvh;padding:env(safe-area-inset-top) 16px 80px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-6px) rotate(5deg)}}
+@keyframes twinkle{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes bounceIn{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.05)}70%{transform:scale(.95)}100%{transform:scale(1);opacity:1}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes jelly{0%,100%{transform:scale(1)}25%{transform:scale(.95,1.05)}50%{transform:scale(1.05,.95)}75%{transform:scale(.98,1.02)}}
+
+.tabs{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(255,250,253,0),var(--bg) 20%);border-top:none;display:flex;justify-content:center;z-index:100;padding:8px 0 env(safe-area-inset-bottom);backdrop-filter:blur(10px)}
+.tabs-inner{display:flex;max-width:480px;width:100%}
+.tab{flex:1;padding:8px 0;text-align:center;font-size:10px;color:var(--th);border:none;background:none;cursor:pointer;font-family:inherit;transition:all .2s}
+.tab-icon{font-size:22px;display:block;margin-bottom:2px}
+.tab.active{color:var(--c);font-weight:700;transform:scale(1.08)}
+.tab.active .tab-icon{animation:jelly .5s ease}
+
+.header{padding:20px 0 8px;text-align:center;position:relative}
+.header::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(255,105,180,.06) 0%,transparent 70%);pointer-events:none}
+.header h1{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.routine-label{font-size:26px;font-weight:900;margin:6px 0 2px;animation:bounceIn .5s ease}
+.routine-sub{font-size:11px;color:var(--th)}
+
+.cycle-bar{display:flex;gap:5px;margin:14px 0;padding:10px 12px;background:linear-gradient(135deg,var(--sf),var(--sf2));border-radius:var(--r);overflow-x:auto;box-shadow:var(--glow)}
+.cycle-step{flex:1;text-align:center;padding:7px 4px;border-radius:14px;font-size:10px;color:var(--th);line-height:1.3;min-width:0;transition:all .3s}
+.cycle-step.now{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;font-weight:700;transform:scale(1.1);box-shadow:0 3px 12px rgba(255,105,180,.35);animation:jelly .6s ease}
+.cycle-step.done-step{color:var(--c);font-weight:500}
+.cycle-step .step-icon{font-size:15px;display:block;margin-bottom:2px}
+
+.weight-row{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--sf),#F8ECFF);border-radius:var(--r);padding:10px 14px;margin:8px 0;box-shadow:var(--glow)}
+.weight-row .wv{font-size:20px;font-weight:900;flex:1;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.weight-row .wv span{font-size:12px;-webkit-text-fill-color:var(--tm);font-weight:400}
+.weight-row input{width:64px;border:2.5px solid var(--c3);border-radius:12px;padding:6px;font-size:14px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit;transition:border-color .2s}
+.weight-row input:focus{border-color:var(--c);outline:none;box-shadow:0 0 0 3px rgba(255,105,180,.15)}
+.weight-row button{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;border:none;border-radius:12px;padding:7px 16px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 3px 10px rgba(255,105,180,.25);transition:transform .15s}
+.weight-row button:active{transform:scale(.92)}
+
+/* Reward - Royal Purchase */
+.reward{margin:14px 0;border-radius:var(--r2);overflow:hidden;position:relative;background:linear-gradient(135deg,#FFF0F8,#F0E4FF,#E4F0FF);border:2.5px solid var(--c3);box-shadow:var(--glow)}
+@media(prefers-color-scheme:dark){.reward{background:linear-gradient(135deg,#2A1A28,#241A30,#1A2030);border-color:#6B3050}}
+.reward-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 0}
+.reward-title{font-size:13px;font-weight:900;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.reward-edit{font-size:11px;color:var(--th);background:none;border:none;cursor:pointer;font-family:inherit}
+.reward-body{padding:10px 14px 14px;display:flex;gap:12px;align-items:flex-start}
+.reward-img-wrap{width:78px;height:78px;border-radius:16px;overflow:hidden;position:relative;flex-shrink:0;background:#fff;border:3px solid var(--c3);transition:all .3s}
+.reward-img-wrap img{width:100%;height:100%;object-fit:cover}
+.reward-locked .reward-img-wrap{filter:grayscale(.8) brightness(1.1);border-color:var(--th);border-style:dashed}
+.reward-locked .reward-img-wrap::after{content:'';position:absolute;bottom:-2px;right:-2px;font-size:18px;background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,165,0,.3);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z'/%3E%3C/svg%3E");background-size:16px;background-repeat:no-repeat;background-position:center}
+.reward-unlocked .reward-img-wrap{border:3px solid transparent;background-image:linear-gradient(#fff,#fff),linear-gradient(135deg,var(--c),var(--c4),var(--c5),var(--c));background-origin:border-box;background-clip:content-box,border-box;box-shadow:0 0 0 4px rgba(255,105,180,.15),0 0 25px rgba(255,105,180,.2),0 0 50px rgba(216,167,255,.15);animation:rewardPulse 2s infinite}
+@keyframes rewardPulse{0%,100%{box-shadow:0 0 0 4px rgba(255,105,180,.15),0 0 25px rgba(255,105,180,.2)}50%{box-shadow:0 0 0 6px rgba(255,105,180,.25),0 0 35px rgba(255,105,180,.35),0 0 60px rgba(216,167,255,.2)}}
+.reward-info{flex:1;min-width:0}
+.reward-month{font-size:11px;color:var(--th);margin-bottom:4px}
+.reward-progress{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.reward-bar{flex:1;height:10px;background:var(--bd);border-radius:5px;overflow:hidden}
+.reward-bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--c3),var(--c),var(--c4));transition:width .4s}
+.reward-pct{font-size:13px;font-weight:900;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.reward-msg{font-size:11px;color:var(--tm);line-height:1.4}
+.reward-skip-info{font-size:10px;color:var(--th);margin-top:3px}
+.reward-upload{padding:28px 20px;text-align:center;cursor:pointer}
+.reward-upload-icon{font-size:40px;margin-bottom:6px;animation:floaty 3s ease-in-out infinite}
+.reward-upload-text{font-size:12px;color:var(--th);line-height:1.8}
+.reward-upload-text b{color:var(--c);display:block;margin-top:6px;font-size:14px;font-weight:700}
+.reward-price{font-size:12px;color:var(--c);font-weight:700;margin-top:2px}
+.reward-comment{font-size:11px;color:var(--tm);margin-top:6px;padding:8px 10px;background:rgba(255,105,180,.04);border-radius:10px;line-height:1.5;border-left:3px solid var(--c3);font-style:italic}
+.reward-days-left{font-size:10px;color:var(--th);margin-top:4px}
+
+.ex-list{display:flex;flex-direction:column;gap:10px;margin:10px 0}
+.ex-card{background:linear-gradient(135deg,var(--sf),#FDF0FF);border-radius:var(--r);padding:16px;transition:all .3s;border:2.5px solid transparent;box-shadow:0 2px 12px rgba(255,105,180,.06)}
+.ex-card.done{opacity:.4;border-color:var(--c3);background:var(--sf2)}
+.ex-card.done .ex-name{text-decoration:line-through;color:var(--c)}
+.ex-name{font-size:15px;font-weight:900;margin-bottom:3px;color:var(--tx)}
+.ex-desc{font-size:11px;color:var(--th);margin-bottom:10px}
+.ex-sets{display:flex;gap:8px;flex-wrap:wrap}
+.set-btn{width:40px;height:40px;border-radius:50%;border:3px solid var(--c3);background:var(--bg);font-size:12px;font-weight:900;color:var(--c);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:inherit;box-shadow:0 2px 8px rgba(255,105,180,.08)}
+.set-btn.done{background:linear-gradient(135deg,var(--c),var(--c4));border-color:transparent;color:#fff;transform:scale(1.1);box-shadow:0 3px 12px rgba(255,105,180,.3);animation:bounceIn .3s ease}
+.set-btn:active{transform:scale(.8)}
+.how-btn{font-size:11px;color:var(--c);background:none;border:none;cursor:pointer;font-family:inherit;margin-top:10px;padding:0;font-weight:700}
+.how-text{font-size:11px;color:var(--tm);line-height:1.6;margin-top:6px;white-space:pre-line;display:none;background:rgba(255,105,180,.04);padding:10px;border-radius:12px}
+
+.rest-timer{margin-top:10px;padding:10px 12px;background:linear-gradient(135deg,var(--cl),#F0E8FF);border-radius:14px;display:flex;align-items:center;gap:8px;animation:bounceIn .3s ease}
+.rest-timer-bar{flex:1;height:8px;background:var(--bd);border-radius:4px;overflow:hidden}
+.rest-timer-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--c3),var(--c),var(--c4));width:0%;transition:width .3s linear}
+.rest-timer-text{font-size:12px;font-weight:900;color:var(--c);min-width:36px;text-align:right}
+.rest-timer.done-timer{background:linear-gradient(135deg,#E8FFE8,#E8F4FF)}
+.rest-timer.done-timer .rest-timer-fill{background:linear-gradient(90deg,#66CC99,#44AA88)}
+.rest-timer.done-timer .rest-timer-text{color:#22AA66;animation:jelly .5s ease}
+
+.progress-bar{height:10px;background:var(--sf2);border-radius:5px;margin:14px 0 8px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.05)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--c3),var(--c),var(--c4));border-radius:5px;transition:width .3s}
+.progress-text{font-size:11px;color:var(--th);text-align:center;margin-bottom:12px;font-weight:500}
+
+.walk-card{text-align:center;padding:40px 16px;margin:16px 0;background:linear-gradient(135deg,var(--cl),#F0E8FF);border-radius:var(--r2);border:2.5px dashed var(--c3);box-shadow:var(--glow)}
+.walk-card h2{font-size:22px;margin-bottom:8px;font-weight:900}
+.walk-card p{font-size:13px;color:var(--tm);line-height:1.5;margin-bottom:16px}
+
+.done-card{text-align:center;padding:36px 16px;margin:16px 0;animation:bounceIn .5s ease}
+.done-card h2{font-size:28px;margin-bottom:8px;animation:jelly .8s ease}
+.done-card p{font-size:13px;color:var(--tm);margin-bottom:20px;line-height:1.5}
+.done-btns{display:flex;flex-direction:column;gap:10px}
+.btn-primary{padding:16px;background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;width:100%;box-shadow:0 6px 20px rgba(255,105,180,.3);transition:all .15s;letter-spacing:.5px}
+.btn-primary:active{transform:scale(.96);box-shadow:0 3px 10px rgba(255,105,180,.2)}
+.btn-ghost{padding:14px;background:rgba(255,105,180,.05);border:2.5px solid var(--c3);border-radius:var(--r);font-size:14px;color:var(--c);cursor:pointer;font-family:inherit;width:100%;font-weight:600;transition:all .15s}
+.btn-ghost:active{transform:scale(.96);background:rgba(255,105,180,.1)}
+.btn-skip{padding:12px;background:var(--sf);border:2.5px dashed var(--c3);border-radius:var(--r);font-size:13px;color:var(--th);cursor:pointer;font-family:inherit;width:100%;margin-top:4px;transition:all .15s}
+.btn-skip:active{transform:scale(.96)}
+
+.cal-month{text-align:center;font-size:18px;font-weight:900;margin:20px 0 14px;display:flex;align-items:center;justify-content:center;gap:14px}
+.cal-nav{background:linear-gradient(135deg,var(--sf),var(--sf2));border:2px solid var(--c3);font-size:16px;cursor:pointer;color:var(--c);padding:6px 12px;border-radius:12px;transition:all .15s}
+.cal-nav:active{transform:scale(.9)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:16px}
+.cal-day-header{text-align:center;font-size:10px;color:var(--th);padding:4px 0;font-weight:700}
+.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px;font-size:12px;color:var(--tm);cursor:pointer;transition:all .2s;position:relative;font-weight:500}
+.cal-day:active{transform:scale(.85)}
+.cal-day.today{font-weight:900;color:var(--tx);background:rgba(255,105,180,.06)}
+.cal-day.has-record{background:linear-gradient(135deg,var(--cl),#F0E8FF);color:var(--c);font-weight:700;box-shadow:0 2px 8px rgba(255,105,180,.1)}
+.cal-day.has-record::after{content:'';width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,var(--c),var(--c4));position:absolute;bottom:4px;animation:twinkle 2s infinite}
+.cal-day.selected{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;font-weight:900;box-shadow:0 3px 12px rgba(255,105,180,.3)}
+.cal-day.selected::after{background:#fff;animation:none}
+.cal-detail{background:linear-gradient(135deg,var(--sf),#FDF0FF);border-radius:var(--r);padding:16px;margin:8px 0;box-shadow:var(--glow);animation:bounceIn .3s ease}
+.cal-detail-title{font-size:14px;font-weight:900;margin-bottom:8px;color:var(--c)}
+.cal-detail-item{font-size:12px;color:var(--tm);padding:5px 0}
+
+.wt-current{text-align:center;padding:24px 0}
+.wt-current .wt-num{font-size:48px;font-weight:900;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wt-current .wt-unit{font-size:14px;color:var(--tm);font-weight:500}
+.wt-input-row{display:flex;gap:8px;margin:0 0 16px;align-items:center}
+.wt-input-row input{flex:1;border:2.5px solid var(--c3);border-radius:var(--r);padding:14px;font-size:16px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit;transition:all .2s}
+.wt-input-row input:focus{border-color:var(--c);outline:none;box-shadow:0 0 0 4px rgba(255,105,180,.12)}
+.wt-input-row button{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;border:none;border-radius:var(--r);padding:14px 22px;font-size:15px;font-weight:900;font-family:inherit;cursor:pointer;box-shadow:0 4px 15px rgba(255,105,180,.25);transition:transform .15s}
+.wt-input-row button:active{transform:scale(.92)}
+.wt-chart{background:linear-gradient(135deg,var(--sf),#FDF0FF);border-radius:var(--r);padding:16px;margin:14px 0;box-shadow:var(--glow)}
+.wt-chart canvas{width:100%;height:200px}
+.wt-list{margin:14px 0}
+.wt-item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:2px solid rgba(255,105,180,.06);font-size:13px;font-weight:500}
+.wt-item .wt-d{color:var(--th)}
+
+.crop-modal{position:fixed;inset:0;background:rgba(30,10,30,.9);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.crop-title{color:#fff;font-size:15px;margin-bottom:14px;font-weight:900}
+.crop-area{width:240px;height:240px;overflow:hidden;border-radius:20px;border:3px solid var(--c);position:relative;touch-action:none;cursor:grab;box-shadow:0 0 30px rgba(255,105,180,.3)}
+.crop-area img{position:absolute;max-width:none;max-height:none;user-select:none;-webkit-user-drag:none}
+.crop-btns{display:flex;gap:14px;margin-top:18px}
+.crop-btns button{padding:12px 28px;border-radius:16px;font-size:14px;font-weight:900;border:none;cursor:pointer;font-family:inherit;transition:transform .15s}
+.crop-btns button:active{transform:scale(.92)}
+.crop-save{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;box-shadow:0 4px 15px rgba(255,105,180,.3)}
+.crop-cancel{background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.2)!important}
+
+.skip-modal{position:fixed;inset:0;background:rgba(30,10,30,.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(5px)}
+.skip-box{background:var(--bg);border-radius:var(--r2);padding:28px;max-width:320px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(255,105,180,.15);animation:bounceIn .3s ease}
+.skip-box h3{font-size:20px;margin-bottom:10px;font-weight:900}
+.skip-box p{font-size:13px;color:var(--tm);margin-bottom:16px;line-height:1.6}
+.skip-box .skip-count{font-size:32px;font-weight:900;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin:10px 0}
+.skip-btns{display:flex;gap:10px}
+.skip-btns button{flex:1;padding:14px;border-radius:14px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:transform .15s}
+.skip-btns button:active{transform:scale(.92)}
+
+/* Complete popup */
+.complete-popup{position:fixed;inset:0;background:rgba(30,10,30,.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(5px)}
+.complete-box{background:var(--bg);border-radius:var(--r2);padding:28px;max-width:320px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(255,105,180,.15);animation:bounceIn .4s ease}
+.complete-box h3{font-size:22px;margin-bottom:14px;font-weight:900}
+.complete-item{font-size:13px;color:var(--tm);line-height:2;text-align:left;padding:0 8px}
+.complete-item b{color:var(--c);font-weight:700}
+.complete-comment{font-size:12px;color:var(--tm);margin:12px 0;padding:10px 12px;background:rgba(255,105,180,.04);border-radius:12px;line-height:1.6;border-left:3px solid var(--c3);font-style:italic;text-align:left}
+.complete-btn{margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;border:none;border-radius:16px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;width:100%;box-shadow:0 4px 15px rgba(255,105,180,.3);transition:transform .15s}
+.complete-btn:active{transform:scale(.92)}
+
+/* Price input in upload */
+.price-row{display:flex;align-items:center;gap:8px;margin-top:12px;justify-content:center}
+.price-row input{width:120px;border:2.5px solid var(--c3);border-radius:12px;padding:8px 10px;font-size:14px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit}
+.price-row input:focus{border-color:var(--c);outline:none;box-shadow:0 0 0 3px rgba(255,105,180,.15)}
+.price-row span{font-size:13px;color:var(--th);font-weight:700}
+
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;padding:12px 24px;border-radius:24px;font-size:13px;font-weight:700;opacity:0;transition:all .3s;pointer-events:none;z-index:999;box-shadow:0 6px 20px rgba(255,105,180,.3)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);animation:jelly .4s ease}
+
+.confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1000}
+.confetti-piece{position:absolute;border-radius:3px;animation:confettiFall 3s ease-in forwards}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-20px) rotate(0deg) scale(1)}50%{opacity:1}100%{opacity:0;transform:translateY(100vh) rotate(1080deg) scale(.5)}}
+
+.hidden{display:none!important}
+
+.sparkles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.sparkle{position:absolute;font-size:12px;opacity:0;animation:sparkleFloat linear infinite}
+@keyframes sparkleFloat{
+0%{opacity:0;transform:translateY(100vh) rotate(0deg)}
+10%{opacity:.6}
+90%{opacity:.6}
+100%{opacity:0;transform:translateY(-20px) rotate(360deg)}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal"></div>
+<div class="toast" id="toast"></div>
+<div class="tabs"><div class="tabs-inner">
+<button class="tab active" onclick="switchTab(0)"><span class="tab-icon">👸</span>수련</button>
+<button class="tab" onclick="switchTab(1)"><span class="tab-icon">📅</span>기록</button>
+<button class="tab" onclick="switchTab(2)"><span class="tab-icon">⚖️</span>몸무게</button>
+</div></div>
+<script>
+// --- Royal Comments ---
+var COMMENTS_EARLY=[
+'왕실이 오늘 운동을 확인했어요. 일단 지켜보는 중입니다.',
+'오늘 기록이 접수되었어요. 시작이 꽤 괜찮습니다.',
+'이틀째 수련 확인. 생각보다 진심이시군요.',
+'왕실이 공주님의 의지를 조금 인정하기 시작했어요.',
+'구매 명분이 조금씩 쌓이고 있어요.',
+'심사위원회 반응: "생각보다 꽤 성실하신데요?"',
+'오늘 운동이 심사 기록에 반영되었어요.',
+'재무부가 오늘 운동을 긍정적으로 봤어요.',
+'왕실이 이번 기록을 조용히 높게 평가했어요.',
+'공주님의 꾸준함이 슬슬 눈에 띄고 있어요.',
+'오늘도 명분 1스푼이 추가되었어요.',
+'심사 분위기가 나쁘지 않아요. 계속 가봅시다.',
+'왕실이 아직은 신중하지만, 반응은 괜찮아요.',
+'오늘 수련으로 첫 인상이 꽤 좋아졌어요.',
+'충동구매보다는 계획된 소비에 가까워지고 있어요.',
+'왕실이 공주님의 페이스를 체크하는 중이에요.',
+'심사표에 작은 플러스가 찍혔어요.',
+'오늘 운동은 꽤 모범적으로 기록되었어요.'
+];
+var COMMENTS_MID=[
+'분위기가 꽤 좋아졌어요. 왕실도 진지하게 보고 있어요.',
+'이번 소비를 진지하게 검토 중이에요.',
+'사치라기보다 보상에 가까워지고 있어요.',
+'왕실도 슬슬 말릴 명분이 줄어들고 있어요.',
+'이 정도면 이유 있는 소비라는 의견이 나왔어요.',
+'재무부의 눈치 강도가 확실히 줄었습니다.',
+'구매 명분이 꽤 탄탄해졌어요.',
+'예비 승인 직전이에요. 흐름이 좋습니다.',
+'오늘 기록이 허가 쪽으로 힘을 보탰어요.',
+'왕실 내부 분위기가 꽤 우호적으로 바뀌었어요.',
+'공주님의 꾸준함이 설득력을 얻고 있어요.',
+'오늘 운동은 꽤 인상적인 자료로 남았어요.',
+'이제는 변덕보다 의지로 보이고 있어요.',
+'심사위원회가 조용히 고개를 끄덕였어요.',
+'보상으로 인정될 가능성이 점점 커지고 있어요.',
+'왕실이 이번 소비를 조금 덜 의심하고 있어요.',
+'허가 게이지가 제법 안정적으로 오르고 있어요.',
+'이쯤 되니 분위기가 꽤 진지해졌어요.'
+];
+var COMMENTS_LATE=[
+'왕실이 공주님의 꾸준함에 감동했어요.',
+'후회 가능성이 낮은 소비로 평가받고 있어요.',
+'이제 꽤 정당한 보상으로 보입니다.',
+'최종 심사 직전. 거의 다 왔어요.',
+'내부 의견이 거의 "사게 해드리자" 쪽입니다.',
+'구매 허가에 가까운 분위기가 형성됐어요.',
+'왕실도 이제는 꽤 납득한 것 같아요.',
+'말리기보다 응원하는 쪽으로 기울고 있어요.',
+'예비 승인이 사실상 내려진 분위기예요.',
+'지금 흐름이면 아주 무난하게 통과할 것 같아요.',
+'공주님의 성실함이 최종 심사에 잘 반영되고 있어요.',
+'허가 보류 사유가 거의 사라졌어요.',
+'왕실이 이번 소비를 보상으로 받아들이는 중이에요.'
+];
+function getRoyalComment(count){
+  var pool;
+  if(count<=7) pool=COMMENTS_EARLY;
+  else if(count<=14) pool=COMMENTS_MID;
+  else pool=COMMENTS_LATE;
+  // seed by count for consistency
+  var idx=((count*7919+31)%pool.length+pool.length)%pool.length;
+  return pool[idx];
+}
+
+// --- Exercise Pool ---
+var POOL={
+  compound:[
+    {name:'스쿼트',sets:3,reps:10,how:'발 어깨너비, 발끝 살짝 바깥\n엉덩이 뒤로 빼며 허벅지 평행까지\n무릎이 발끝 방향 따라가게\n발뒤꿈치로 밀며 올라오기'},
+    {name:'고블릿 스쿼트',sets:3,reps:10,how:'덤벨/물병 가슴 앞에 잡기\n스쿼트 자세로 앉기\n팔꿈치가 무릎 안쪽에 닿을 정도\n발뒤꿈치로 밀며 올라오기'},
+    {name:'런지',sets:3,reps:10,how:'한 발 앞으로 크게 내딛기\n뒷무릎 바닥 가까이 내려가기\n상체 곧게, 앞무릎 90도\n앞발 뒤꿈치로 밀며 원위치'},
+    {name:'와이드 스쿼트',sets:3,reps:10,how:'발을 어깨보다 넓게, 발끝 45도 바깥\n엉덩이 뒤로 빼며 깊게 앉기\n내전근(허벅지 안쪽) 자극 느끼기\n발뒤꿈치로 밀며 올라오기'},
+    {name:'스플릿 스쿼트',sets:3,reps:10,how:'한 발 앞, 한 발 뒤로 벌리고 서기\n뒷무릎 바닥 가까이 내리기\n상체 곧게 유지\n앞발로 밀며 올라오기, 양쪽 번갈아'}
+  ],
+  hinge:[
+    {name:'루마니안 데드리프트',sets:3,reps:10,how:'발 골반너비, 무릎 살짝 굽힘 유지\n엉덩이를 뒤로 밀며 상체 숙이기\n햄스트링 당김 느끼면 멈추기\n둔근 쥐어짜며 올라오기'},
+    {name:'덤벨 데드리프트',sets:3,reps:10,how:'양손 덤벨, 발 골반너비\n엉덩이 뒤로 밀며 숙이기\n덤벨이 정강이 따라 내려가게\n둔근·햄스트링으로 올라오기'},
+    {name:'힙쓰러스트',sets:3,reps:12,how:'등 상부를 의자/소파에 기대기\n발바닥 바닥, 무릎 90도\n둔근 힘주며 골반 들어올리기\n정점 2초 유지'},
+    {name:'글루트브릿지',sets:3,reps:12,how:'누워서 무릎 굽히고 발바닥 바닥에\n둔근 힘주며 골반 들어올리기\n어깨~무릎 일직선, 2초 유지\n천천히 내리기'},
+    {name:'싱글레그 데드리프트',sets:3,reps:10,how:'한 발로 서기, 반대 다리 뒤로 뻗기\n엉덩이 뒤로 밀며 상체 숙이기\n균형 잡으며 햄스트링 당김 느끼기\n천천히 올라오기, 양쪽 번갈아'}
+  ],
+  pull:[
+    {name:'덤벨 로우',sets:3,reps:10,how:'한 손+한 무릎 벤치에 짚기\n반대 손으로 덤벨/밴드 당기기\n팔꿈치를 골반 쪽으로 당기듯\n천천히 내리기'},
+    {name:'밴드 로우',sets:3,reps:10,how:'밴드를 문에 걸거나 높은 곳에 고정\n양손으로 당기기\n견갑골 모으듯 등 수축\n천천히 돌아가기'},
+    {name:'밴드 풀어파트',sets:3,reps:12,how:'밴드를 양손으로 어깨너비 잡기\n팔 펴고 가슴 높이에서 시작\n양쪽으로 당겨 벌리기\n견갑골 모으며 2초 유지'},
+    {name:'슈퍼맨',sets:3,reps:10,how:'엎드려서 팔다리 쭉 펴기\n동시에 팔·다리·가슴 들어올리기\n2초 유지 후 천천히 내리기\n허리 과하게 꺾지 않기'}
+  ],
+  push:[
+    {name:'인클라인 푸시업',sets:3,reps:10,how:'의자나 벽에 손 짚고 푸시업\n몸 일직선 유지\n가슴이 손 높이 가까이 올 때까지\n밀어 올리기'},
+    {name:'푸시업',sets:3,reps:10,how:'손 어깨너비, 몸 일직선\n가슴이 바닥 가까이 올 때까지\n코어 힘주고 밀어 올리기\n어려우면 무릎 대고'},
+    {name:'숄더프레스',sets:3,reps:10,how:'양손 덤벨/밴드 어깨 높이\n머리 위로 밀어올리기\n팔꿈치 완전히 펴기\n천천히 내리기'},
+    {name:'니 푸시업',sets:3,reps:12,how:'무릎 대고 푸시업 자세\n손 어깨너비, 몸 일직선(머리~무릎)\n가슴 바닥 가까이 내리기\n밀어 올리기'}
+  ],
+  core:[
+    {name:'데드버그',sets:2,reps:10,how:'누워서 양팔 천장, 무릎 90도\n오른팔+왼다리 동시에 뻗기\n허리가 바닥에서 뜨지 않게\n교대 반복'},
+    {name:'플랭크',sets:2,reps:'30초',how:'팔꿈치 바닥, 어깨 바로 아래\n머리~발끝 일직선 유지\n배꼽 척추 쪽으로 당기듯\n엉덩이 올라가거나 처지지 않게'},
+    {name:'팔로프 프레스',sets:2,reps:10,how:'밴드를 옆에 고정, 양손으로 잡기\n가슴 앞에서 팔 쭉 뻗기\n몸이 돌아가지 않게 코어 버티기\n천천히 당겨오기. 양쪽 반복'},
+    {name:'바이시클 크런치',sets:2,reps:12,how:'누워서 머리 살짝 들기\n오른 팔꿈치-왼 무릎 터치\n반대쪽 다리는 쭉 뻗기\n교대로 자전거 페달 돌리듯'},
+    {name:'사이드 플랭크',sets:2,reps:'20초',how:'옆으로 누워 팔꿈치 짚기\n골반 들어올려 몸 일직선\n위쪽 손 허리 또는 하늘\n양쪽 각각 수행'}
+  ]
+};
+
+function seededRand(seed){return function(){seed=(seed*16807+0)%2147483647;return(seed-1)/2147483646}}
+function pickRandom(arr,n,rng){
+  var a=arr.slice();var res=[];
+  for(var i=0;i<n&&a.length;i++){var idx=Math.floor(rng()*a.length);res.push(a.splice(idx,1)[0])}
+  return res;
+}
+function generateRoutine(idx){
+  var seed=idx*7919+31;
+  var rng=seededRand(seed);
+  var labels=['A','B','C'];
+  var icons=['👸','💎','🌸'];
+  var li=idx%3;
+  var base=[
+    pickRandom(POOL.compound,1,rng)[0],
+    pickRandom(POOL.hinge,1,rng)[0],
+    pickRandom(rng()<0.5?POOL.pull:POOL.push,1,rng)[0],
+    pickRandom(POOL.core,1,rng)[0]
+  ];
+  var exercises=base.map(function(ex,i){
+    var key=idx+'_'+i;
+    if(S.swapped&&S.swapped[key]){return S.swapped[key]}
+    return ex;
+  });
+  return {
+    type:'strength',
+    name:'왕실 근력 수련 '+labels[li],
+    icon:icons[li],
+    short:'수련'+labels[li],
+    exercises:exercises
+  };
+}
+var CARDIO_OPTIONS=[
+  {name:'런닝',icon:'🏃‍♀️',dur:'20-30분',desc:'가볍게 달리기, 심폐 강화'},
+  {name:'빠르게 걷기',icon:'🚶‍♀️',dur:'30-40분',desc:'경사 걷기, 파워워킹'},
+  {name:'발레',icon:'🩰',dur:'30-40분',desc:'발레 기초 동작, 유연성+근력'},
+  {name:'실내자전거',icon:'🚴‍♀️',dur:'20-30분',desc:'저강도 사이클링, 관절 부담 적음'}
+];
+function generateCardio(idx){
+  var seed=idx*4219+17;
+  var rng=seededRand(seed);
+  var pick=CARDIO_OPTIONS[Math.floor(rng()*CARDIO_OPTIONS.length)];
+  return {type:'cardio',name:pick.name,icon:'🏃‍♀️',short:'유산소',dur:pick.dur,desc:pick.desc};
+}
+
+var CYCLE_PATTERN=['strength','cardio','strength','cardio','strength'];
+function getRoutineForCycle(globalIdx){
+  var pos=globalIdx%5;
+  if(CYCLE_PATTERN[pos]==='cardio') return generateCardio(globalIdx);
+  else return generateRoutine(globalIdx);
+}
+var SWAP_MAX=3;
+var GOAL=20;
+
+var S=JSON.parse(localStorage.getItem('wk_princess')||'{}');
+if(S.idx===undefined)S.idx=0;
+if(!S.sets)S.sets={};
+if(!S.weights)S.weights=[];
+if(!S.history)S.history=[];
+if(!S.reward)S.reward={};
+if(!S.swaps)S.swaps={};
+if(!S.swapped)S.swapped={};
+if(!S.streak)S.streak=0;
+var curTab=0;
+var calYear,calMonth;
+(function(){var d=new Date();calYear=d.getFullYear();calMonth=d.getMonth()})();
+var calSelected=null;
+function save(){localStorage.setItem('wk_princess',JSON.stringify(S))}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2200)}
+function curRoutine(){return getRoutineForCycle(S.idx)}
+function monthKey(y,m){return y+'-'+(m+1)}
+function curMonthKey(){var d=new Date();return monthKey(d.getFullYear(),d.getMonth())}
+function getMonthCount(){
+  var now=new Date(),m=now.getMonth(),y=now.getFullYear(),c=0;
+  S.history.forEach(function(h){if(h.year===y&&h.month===m)c++});
+  return c;
+}
+function getSwapsUsed(){return S.swaps[curMonthKey()]||0}
+function getStreak(){
+  // count consecutive days with records ending today or yesterday
+  var days={};
+  S.history.forEach(function(h){
+    var k=h.year+'-'+h.month+'-'+h.day;
+    days[k]=true;
+  });
+  var d=new Date();
+  // check if today has record, if not start from yesterday
+  var tk=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+  if(!days[tk]){
+    d.setDate(d.getDate()-1);
+  }
+  var streak=0;
+  for(var i=0;i<365;i++){
+    var k=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+    if(days[k]){streak++;d.setDate(d.getDate()-1);}
+    else break;
+  }
+  return streak;
+}
+function getDaysLeftInMonth(){
+  var now=new Date();
+  var last=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  return last-now.getDate();
+}
+
+function switchTab(n){
+  curTab=n;
+  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',i===n)});
+  render();
+}
+
+function render(){
+  if(curTab===0)renderWorkout();
+  else if(curTab===1)renderCalendar();
+  else renderWeight();
+}
+
+function renderWorkout(){
+  var r=curRoutine();
+  var h='<div class="header"><h1>오늘의 공주 수련</h1>';
+  h+='<div class="routine-label">'+(r.type==='cardio'?'🏃‍♀️ 유산소 Day':r.icon+' '+r.name)+'</div>';
+  h+='</div>';
+
+  // Cycle guide
+  h+='<div class="cycle-bar">';
+  var ci=S.idx%5;
+  for(var gi=0;gi<5;gi++){
+    var rt=getRoutineForCycle(S.idx-ci+gi);
+    var cls=gi===ci?'now':(gi<ci?'done-step':'');
+    h+='<div class="cycle-step '+cls+'"><span class="step-icon">'+rt.icon+'</span>'+rt.short+'</div>';
+  }
+  h+='</div>';
+
+  // Weight
+  var latestW=S.weights.length?S.weights[S.weights.length-1]:null;
+  h+='<div class="weight-row">';
+  h+='<div class="wv">'+(latestW?latestW.kg+'<span> kg</span>':'<span style="font-size:14px">몸무게</span>')+'</div>';
+  h+='<input type="number" id="wi" placeholder="kg" step="0.1">';
+  h+='<button onclick="saveW()">저장</button>';
+  h+='</div>';
+
+  // Royal Reward
+  h+=renderReward();
+
+  if(r.type==='cardio'){
+    var picked=S.cardioChoice;
+    h+='<div class="walk-card">';
+    if(picked===undefined||picked===null){
+      h+='<h2>🎀 오늘의 리본 해제 미션</h2>';
+      h+='<p>오늘 할 유산소를 골라주세요!</p>';
+      h+='<div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">';
+      CARDIO_OPTIONS.forEach(function(c,i){
+        h+='<button class="btn-ghost" style="text-align:left;padding:12px 14px" onclick="pickCardio('+i+')">';
+        h+='<strong>'+c.icon+' '+c.name+'</strong> <span style="color:var(--th);font-size:12px">'+c.dur+'</span><br>';
+        h+='<span style="font-size:11px;color:var(--tm)">'+c.desc+'</span>';
+        h+='</button>';
+      });
+      h+='</div>';
+    } else {
+      var cc=CARDIO_OPTIONS[picked];
+      h+='<h2>'+cc.icon+' '+cc.name+' '+cc.dur+'</h2>';
+      h+='<p>'+cc.desc+'</p>';
+      h+='<button class="btn-primary" onclick="completeCardio('+picked+')">오늘의 수련 완료하기 👸</button>';
+      h+='<button class="btn-ghost" style="margin-top:8px" onclick="pickCardio(null)">다른 유산소 고르기</button>';
+    }
+    if(S.idx>0) h+='<button class="btn-skip" onclick="goBack()" style="margin-top:4px">↩ 잘못 눌렀어요! 되돌리기</button>';
+    h+='</div>';
+  } else {
+    var totalSets=0,doneSets=0;
+    r.exercises.forEach(function(ex,i){
+      for(var s=0;s<ex.sets;s++){totalSets++;if(S.sets[i+'_'+s])doneSets++;}
+    });
+    var pct=totalSets?Math.round(doneSets/totalSets*100):0;
+    var allDone=doneSets===totalSets;
+
+    h+='<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div>';
+    h+='<div class="progress-text">'+doneSets+' / '+totalSets+' 세트 ('+pct+'%)</div>';
+
+    if(!allDone){
+      h+='<div style="text-align:center;font-size:12px;color:var(--th);margin-bottom:8px">🏰 왕실이 지정한 오늘의 근력 퀘스트</div>';
+      h+='<div class="ex-list">';
+      r.exercises.forEach(function(ex,i){
+        var exDone=true;
+        for(var s=0;s<ex.sets;s++){if(!S.sets[i+'_'+s]){exDone=false;break;}}
+        h+='<div class="ex-card'+(exDone?' done':'')+'">';
+        var swapsLeft=SWAP_MAX-getSwapsUsed();
+        h+='<div class="ex-name" style="display:flex;justify-content:space-between;align-items:center">'+ex.name;
+        if(!exDone&&swapsLeft>0) h+='<button onclick="showSwapConfirm('+i+')" style="font-size:10px;padding:3px 8px;border:1.5px dashed var(--c3);border-radius:8px;background:var(--sf);color:var(--th);cursor:pointer;font-family:inherit">🔄 변경</button>';
+        h+='</div>';
+        h+='<div class="ex-desc">'+ex.sets+'세트 × '+ex.reps+(typeof ex.reps==='number'?'회':'')+(ex.sets<=2?' · 마무리':' · 왕실 티타임 60초')+'</div>';
+        h+='<div class="ex-sets">';
+        for(var s=0;s<ex.sets;s++){
+          var done=S.sets[i+'_'+s];
+          h+='<button class="set-btn'+(done?' done':'')+'" onclick="togSet('+i+','+s+')">'+(done?'✓':(s+1))+'</button>';
+        }
+        h+='</div>';
+        if(ex.how){
+          h+='<button class="how-btn" onclick="togHow(this)">방법 보기 →</button>';
+          h+='<div class="how-text">'+ex.how+'</div>';
+        }
+        if(!exDone&&restTimer&&restEi===i){
+          h+='<div class="rest-timer" id="rest-'+i+'-'+restSi+'">';
+          h+='<div class="rest-timer-bar"><div class="rest-timer-fill"></div></div>';
+          h+='<div class="rest-timer-text">60초</div>';
+          h+='</div>';
+        }
+        h+='</div>';
+      });
+      h+='</div>';
+      if(S.idx>0) h+='<button class="btn-skip" onclick="goBack()" style="margin-top:8px">↩ 잘못 눌렀어요! 되돌리기</button>';
+    }else{
+      var next=getRoutineForCycle(S.idx+1);
+      h+='<div class="done-card">';
+      h+='<h2>👸✨ 수련 완료!</h2>';
+      h+='<p>고생했어요!<br>다음: <strong>'+next.icon+' '+next.name+'</strong></p>';
+      h+='<div class="done-btns">';
+      h+='<button class="btn-primary" onclick="nextRoutine(true)">바로 다음 하기 →</button>';
+      h+='<button class="btn-ghost" onclick="nextRoutine(false)">다음에 할게요 👋</button>';
+      h+='<button class="btn-skip" onclick="goBack()" style="margin-top:4px">↩ 잘못 눌렀어요! 되돌리기</button>';
+      h+='</div></div>';
+    }
+  }
+  document.getElementById('app').innerHTML=h;
+  setTimeout(restoreRestUI,50);
+}
+
+function renderReward(){
+  var h='';
+  var count=getMonthCount();
+  var swaps=getSwapsUsed();
+  var pct=Math.min(100,Math.round(count/GOAL*100));
+  var unlocked=count>=GOAL;
+  var now=new Date();
+  var ml=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'][now.getMonth()];
+  var swapsLeft=SWAP_MAX-swaps;
+  var daysLeft=getDaysLeftInMonth();
+
+  if(!S.reward.img){
+    h+='<div class="reward"><div class="reward-upload" onclick="showPriceUpload()">';
+    h+='<div class="reward-upload-icon">👑</div>';
+    h+='<div style="font-size:14px;font-weight:900;background:linear-gradient(90deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px">'+ml+' 왕실 구매 심사 품목</div>';
+    h+='<div class="reward-upload-text">공주님의 다음 보상을 기다리고 있어요<b>👑 왕실 구매 심사 제출하기</b></div>';
+    h+='</div></div>';
+  } else {
+    var state=unlocked?'reward-unlocked':'reward-locked';
+    h+='<div class="reward '+state+'">';
+    h+='<div class="reward-header">';
+    h+='<span class="reward-title">'+(unlocked?'🎉 왕실 구매 허가 완료! 🛒':'👑 '+ml+' 왕실 구매 심사 품목')+'</span>';
+    h+='<button class="reward-edit" onclick="changeReward()">변경</button>';
+    h+='</div><div class="reward-body">';
+    h+='<div class="reward-img-wrap"><img src="'+S.reward.img+'">';
+    h+='</div><div class="reward-info">';
+    if(S.reward.price) h+='<div class="reward-price">💰 '+S.reward.price+'</div>';
+    h+='<div class="reward-month">소비 정당화 게이지:</div>';
+    h+='<div class="reward-progress">';
+    h+='<div class="reward-bar"><div class="reward-bar-fill" style="width:'+pct+'%"></div></div>';
+    h+='<span class="reward-pct">'+pct+'%</span>';
+    h+='</div>';
+    if(unlocked){
+      h+='<div class="reward-msg">🥳 왕실이 구매를 허가했어요! 사세요!!</div>';
+    } else {
+      h+='<div class="reward-days-left">이번 달 완주까지 '+(GOAL-count)+'회 남음 · '+daysLeft+'일 남음</div>';
+    }
+    if(count>0&&!unlocked){
+      h+='<div class="reward-comment">💬 '+getRoyalComment(count)+'</div>';
+    }
+    h+='<div class="reward-skip-info">🔄 운동 변경 '+swaps+'/'+SWAP_MAX+'회'+(swapsLeft>0?' ('+swapsLeft+'번 남음)':' (소진)')+'</div>';
+    h+='</div></div></div>';
+  }
+  return h;
+}
+
+// --- Price Upload Modal ---
+function showPriceUpload(){
+  var h='<div class="skip-modal" onclick="if(event.target===this)closeModal()">';
+  h+='<div class="skip-box">';
+  h+='<h3>👑 왕실 구매 심사 제출</h3>';
+  h+='<p>이번 달 완주하면 사고 싶은 것의<br>사진과 가격을 제출해주세요!</p>';
+  h+='<div class="price-row"><span>💰</span><input type="text" id="priceInput" placeholder="예: 39,000원"></div>';
+  h+='<div style="margin-top:14px">';
+  h+='<button class="complete-btn" onclick="triggerFileUpload()">📸 사진 선택</button>';
+  h+='</div>';
+  h+='<input type="file" id="rwdFilePrincess" accept="image/*" style="display:none" onchange="startCropWithPrice(this)">';
+  h+='</div></div>';
+  document.getElementById('modal').innerHTML=h;
+}
+function triggerFileUpload(){
+  var price=document.getElementById('priceInput').value;
+  S.reward.price=price;save();
+  document.getElementById('rwdFilePrincess').click();
+}
+function startCropWithPrice(input){
+  var file=input.files[0];if(!file)return;
+  closeModal();
+  var reader=new FileReader();
+  reader.onload=function(e){showCropModal(e.target.result)};
+  reader.readAsDataURL(file);
+}
+
+// --- Calendar tab ---
+function renderCalendar(){
+  var h='<div class="cal-month">';
+  h+='<button class="cal-nav" onclick="calPrev()">‹</button>';
+  h+='<span>'+(calYear)+'년 '+(calMonth+1)+'월</span>';
+  h+='<button class="cal-nav" onclick="calNext()">›</button>';
+  h+='</div>';
+  var days=['일','월','화','수','목','금','토'];
+  h+='<div class="cal-grid">';
+  days.forEach(function(d){h+='<div class="cal-day-header">'+d+'</div>'});
+  var first=new Date(calYear,calMonth,1).getDay();
+  var last=new Date(calYear,calMonth+1,0).getDate();
+  var today=new Date();
+  var records={};
+  S.history.forEach(function(item){
+    if(item.year===calYear&&item.month===calMonth){
+      if(!records[item.day])records[item.day]=[];
+      records[item.day].push(item);
+    }
+  });
+  for(var i=0;i<first;i++)h+='<div class="cal-day"></div>';
+  for(var d=1;d<=last;d++){
+    var isToday=calYear===today.getFullYear()&&calMonth===today.getMonth()&&d===today.getDate();
+    var has=records[d];
+    var sel=calSelected===d;
+    var cls='cal-day'+(isToday?' today':'')+(has?' has-record':'')+(sel?' selected':'');
+    h+='<div class="'+cls+'" onclick="selectDay('+d+')">'+d+'</div>';
+  }
+  h+='</div>';
+  if(calSelected&&records[calSelected]){
+    h+='<div class="cal-detail">';
+    h+='<div class="cal-detail-title">'+(calMonth+1)+'/'+calSelected+' 수련 기록</div>';
+    records[calSelected].forEach(function(item){
+      h+='<div class="cal-detail-item">'+item.icon+' '+item.name+'</div>';
+    });
+    h+='</div>';
+  } else if(calSelected){
+    h+='<div class="cal-detail"><div class="cal-detail-item" style="color:var(--th)">기록 없음</div></div>';
+  }
+  var mc=0;S.history.forEach(function(item){if(item.year===calYear&&item.month===calMonth)mc++});
+  h+='<div style="text-align:center;margin:16px 0;font-size:13px;color:var(--tm)">이번 달 총 <b style="color:var(--c)">'+mc+'회</b> 수련</div>';
+  document.getElementById('app').innerHTML=h;
+}
+function selectDay(d){calSelected=calSelected===d?null:d;renderCalendar()}
+function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--}calSelected=null;renderCalendar()}
+function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++}calSelected=null;renderCalendar()}
+
+// --- Weight tab ---
+function renderWeight(){
+  var h='';
+  var latestW=S.weights.length?S.weights[S.weights.length-1]:null;
+  h+='<div class="wt-current">';
+  h+='<div class="wt-num">'+(latestW?latestW.kg:'-')+'</div>';
+  h+='<div class="wt-unit">kg</div>';
+  h+='</div>';
+  h+='<div class="wt-input-row">';
+  h+='<input type="number" id="wti" placeholder="몸무게 입력" step="0.1">';
+  h+='<button onclick="saveWt()">저장</button>';
+  h+='</div>';
+  if(S.weights.length>=2){
+    h+='<div class="wt-chart"><canvas id="wtCanvas" width="400" height="200"></canvas></div>';
+  }
+  if(S.weights.length){
+    h+='<div class="wt-list">';
+    var recent=S.weights.slice(-15).reverse();
+    recent.forEach(function(w){
+      h+='<div class="wt-item"><span>'+w.kg+' kg</span><span class="wt-d">'+w.date+'</span></div>';
+    });
+    h+='</div>';
+  }
+  h+='<div style="margin:24px 0;display:flex;flex-direction:column;gap:8px">';
+  h+='<button class="btn-ghost" onclick="exportBackup()">📦 데이터 백업 (내보내기)</button>';
+  h+='<label class="btn-ghost" style="text-align:center;cursor:pointer">📥 데이터 복원 (가져오기)<input type="file" accept=".json" style="display:none" onchange="importBackup(this)"></label>';
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+  if(S.weights.length>=2)drawChart();
+}
+function saveWt(){
+  var v=parseFloat(document.getElementById('wti').value);
+  if(!v||v<20||v>300)return;
+  var now=new Date();
+  S.weights.push({kg:v,date:(now.getFullYear())+'.'+(now.getMonth()+1)+'.'+now.getDate()});
+  save();renderWeight();toast(v+'kg 저장!');
+}
+function drawChart(){
+  var canvas=document.getElementById('wtCanvas');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var dpr=window.devicePixelRatio||1;
+  canvas.width=canvas.offsetWidth*dpr;
+  canvas.height=200*dpr;
+  ctx.scale(dpr,dpr);
+  var W=canvas.offsetWidth,H=200;
+  var data=S.weights.slice(-20);
+  var vals=data.map(function(w){return w.kg});
+  var min=Math.min.apply(null,vals)-1;
+  var max=Math.max.apply(null,vals)+1;
+  var range=max-min||1;
+  var padL=40,padR=10,padT=15,padB=25;
+  var gw=W-padL-padR,gh=H-padT-padB;
+  ctx.strokeStyle='rgba(255,107,157,0.1)';ctx.lineWidth=1;
+  for(var i=0;i<5;i++){
+    var y=padT+gh*i/4;
+    ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle='#bbb';ctx.font='10px sans-serif';ctx.textAlign='right';
+    ctx.fillText((max-range*i/4).toFixed(1),padL-4,y+3);
+  }
+  ctx.beginPath();
+  ctx.strokeStyle='#FF6B9D';ctx.lineWidth=2.5;ctx.lineJoin='round';
+  data.forEach(function(w,i){
+    var x=padL+i/(data.length-1)*gw;
+    var y=padT+(max-w.kg)/range*gh;
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  data.forEach(function(w,i){
+    var x=padL+i/(data.length-1)*gw;
+    var y=padT+(max-w.kg)/range*gh;
+    ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle='#FF6B9D';ctx.fill();
+    ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  });
+  ctx.fillStyle='#bbb';ctx.font='9px sans-serif';ctx.textAlign='center';
+  [0,Math.floor(data.length/2),data.length-1].forEach(function(i){
+    if(!data[i])return;
+    var x=padL+i/(data.length-1)*gw;
+    ctx.fillText(data[i].date.split('.').slice(1).join('/'),x,H-5);
+  });
+}
+
+// --- Rest timer ---
+var restTimer=null;
+var restEi=-1,restSi=-1;
+var restStart=0;
+var REST_SEC=60;
+function startRest(ei,si){
+  clearInterval(restTimer);
+  restEi=ei;restSi=si;
+  restStart=Date.now();
+  restTimer=setInterval(function(){
+    var elapsed=Math.floor((Date.now()-restStart)/1000);
+    if(elapsed>=REST_SEC){
+      clearInterval(restTimer);
+      updateRestUI(REST_SEC);
+      restTimer=null;
+    } else {
+      updateRestUI(elapsed);
+    }
+  },200);
+}
+function restoreRestUI(){
+  if(!restTimer||restEi<0)return;
+  var elapsed=Math.floor((Date.now()-restStart)/1000);
+  if(elapsed<REST_SEC)updateRestUI(elapsed);
+  else updateRestUI(REST_SEC);
+}
+function updateRestUI(sec){
+  var el=document.getElementById('rest-'+restEi+'-'+restSi);
+  if(!el)return;
+  var pct=Math.min(100,Math.round(sec/REST_SEC*100));
+  var left=REST_SEC-sec;
+  var bar=el.querySelector('.rest-timer-fill');
+  var txt=el.querySelector('.rest-timer-text');
+  if(bar)bar.style.width=pct+'%';
+  if(txt)txt.textContent=left>0?left+'초':'GO!';
+  if(left<=0)el.classList.add('done-timer');
+}
+
+// --- Actions ---
+function togSet(ei,si){
+  var key=ei+'_'+si;
+  var wasDone=S.sets[key];
+  S.sets[key]=!S.sets[key];
+  save();
+  if(!wasDone&&S.sets[key]){
+    var r=curRoutine();
+    var ex=r.exercises[ei];
+    var allExDone=true;
+    for(var s=0;s<ex.sets;s++){if(!S.sets[ei+'_'+s]){allExDone=false;break;}}
+    if(!allExDone){startRest(ei,si);}
+    else{clearInterval(restTimer);restTimer=null;restEi=-1;}
+  } else {
+    clearInterval(restTimer);restTimer=null;restEi=-1;
+  }
+  // Check if ALL exercises complete -> show popup
+  var r=curRoutine();
+  if(r.type==='strength'){
+    var totalSets=0,doneSets=0;
+    r.exercises.forEach(function(ex,i){
+      for(var s=0;s<ex.sets;s++){totalSets++;if(S.sets[i+'_'+s])doneSets++;}
+    });
+    if(doneSets===totalSets&&!wasDone){
+      showCompletePopup(r);
+    }
+  }
+  render();
+}
+function togHow(btn){
+  var txt=btn.nextElementSibling;
+  if(txt.style.display==='block'){txt.style.display='none';btn.textContent='방법 보기 →';}
+  else{txt.style.display='block';btn.textContent='접기';}
+}
+function addHistory(r){
+  var now=new Date();
+  S.history.push({name:r.name,icon:r.icon,year:now.getFullYear(),month:now.getMonth(),day:now.getDate(),date:(now.getMonth()+1)+'/'+now.getDate()});
+}
+function pickCardio(ci){
+  S.cardioChoice=ci;
+  save();render();
+}
+function completeCardio(ci){
+  var c=CARDIO_OPTIONS[ci];
+  var now=new Date();
+  S.history.push({name:c.name,icon:c.icon,year:now.getFullYear(),month:now.getMonth(),day:now.getDate(),date:(now.getMonth()+1)+'/'+now.getDate()});
+  S.idx++;S.cardioChoice=null;save();
+  var count=getMonthCount();
+  var pctGain=Math.round(100/GOAL);
+  showCompletePopupCustom(c.icon+' '+c.name, pctGain, count);
+  render();checkRewardUnlock();
+}
+function nextRoutine(doNow){
+  addHistory(curRoutine());S.idx++;S.sets={};save();
+  if(doNow)toast(curRoutine().icon+' '+curRoutine().name+' 시작!');
+  else toast('다음에 할게요! 👋');
+  render();checkRewardUnlock();
+}
+function goBack(){
+  if(S.idx>0){
+    S.idx--;S.sets={};S.cardioChoice=null;
+    if(S.history.length>0){
+      var last=S.history[S.history.length-1];
+      var now=new Date();
+      if(last.year===now.getFullYear()&&last.month===now.getMonth()&&last.day===now.getDate()){
+        S.history.pop();
+      }
+    }
+    save();render();toast('되돌렸어요! ↩');
+  }
+}
+
+// --- Complete Popup ---
+function showCompletePopup(routine){
+  // record history first
+  addHistory(routine);
+  var count=getMonthCount();
+  var pctGain=Math.round(100/GOAL);
+  showCompletePopupCustom(routine.icon+' '+routine.name, pctGain, count);
+  checkRewardUnlock();
+}
+function showCompletePopupCustom(label, pctGain, count){
+  var streak=getStreak();
+  var comment=getRoyalComment(count);
+  var h='<div class="complete-popup" onclick="if(event.target===this)closeCompletePopup()">';
+  h+='<div class="complete-box">';
+  h+='<h3>👑 구매 심사 반영 완료!</h3>';
+  h+='<div class="complete-item"><b>'+label+'</b> 수련 완료</div>';
+  h+='<div class="complete-item">✨ 소비 정당화 게이지 <b>+'+pctGain+'%</b></div>';
+  h+='<div class="complete-item">🔥 연속 수련 <b>'+streak+'일째</b></div>';
+  h+='<div class="complete-item">📊 이번 달 <b>'+count+'/'+GOAL+'회</b> 완료</div>';
+  h+='<div class="complete-comment">💬 '+comment+'</div>';
+  h+='<button class="complete-btn" onclick="closeCompletePopup()">확인 👸</button>';
+  h+='</div></div>';
+  document.getElementById('modal').innerHTML=h;
+  showConfetti();
+}
+function closeCompletePopup(){closeModal()}
+
+function exportBackup(){
+  var data=JSON.stringify(S,null,2);
+  var blob=new Blob([data],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='princess-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(url);
+  toast('백업 완료! 📦');
+}
+function importBackup(input){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      if(!data.history&&!data.weights){toast('올바른 백업 파일이 아니에요!');return;}
+      if(confirm('기존 데이터를 덮어쓸까요?')){
+        S=data;save();render();toast('복원 완료! 📥');
+      }
+    }catch(err){toast('파일을 읽을 수 없어요!');}
+  };
+  reader.readAsText(file);
+}
+function saveW(){
+  var v=parseFloat(document.getElementById('wi').value);
+  if(!v||v<20||v>300)return;
+  var now=new Date();
+  S.weights.push({kg:v,date:(now.getFullYear())+'.'+(now.getMonth()+1)+'.'+now.getDate()});
+  save();render();toast(v+'kg 저장! 👸');
+}
+
+// --- Swap exercise ---
+function showSwapConfirm(exIdx){
+  var swaps=getSwapsUsed();
+  var left=SWAP_MAX-swaps;
+  var r=curRoutine();
+  var ex=r.exercises[exIdx];
+  var h='<div class="skip-modal" onclick="if(event.target===this)closeModal()">';
+  h+='<div class="skip-box">';
+  if(left<=0){
+    h+='<h3>😥 변경 소진!</h3>';
+    h+='<p>이번 달 변경 '+SWAP_MAX+'번을 다 썼어요.<br>지금 운동으로 힘내봐요!</p>';
+    h+='<div class="skip-btns"><button style="flex:1;background:var(--c);color:#fff" onclick="closeModal()">알겠어요 💪</button></div>';
+  } else {
+    h+='<h3>'+ex.name+' 변경할까요? 🔄</h3>';
+    h+='<span class="skip-count">남은 변경: '+left+'번</span>';
+    h+='<p>같은 부위의 다른 운동으로 바꿔요!</p>';
+    h+='<div class="skip-btns">';
+    h+='<button style="background:var(--sf);color:var(--tm)" onclick="closeModal()">그냥 할게</button>';
+    h+='<button style="background:var(--c);color:#fff" onclick="doSwap('+exIdx+')">변경!</button>';
+    h+='</div>';
+  }
+  h+='</div></div>';
+  document.getElementById('modal').innerHTML=h;
+}
+function doSwap(exIdx){
+  var cats=['compound','hinge',null,'core'];
+  var catName=cats[exIdx];
+  if(catName===null) catName=POOL.pull.some(function(e){return e.name===curRoutine().exercises[exIdx].name})?'pull':'push';
+  var pool=POOL[catName];
+  var cur=curRoutine().exercises[exIdx].name;
+  var others=pool.filter(function(e){return e.name!==cur});
+  if(others.length===0){closeModal();toast('다른 운동이 없어요!');return;}
+  var pick=others[Math.floor(Math.random()*others.length)];
+  var key=S.idx+'_'+exIdx;
+  S.swapped[key]=pick;
+  for(var s=0;s<10;s++){delete S.sets[exIdx+'_'+s]}
+  var mk=curMonthKey();
+  S.swaps[mk]=(S.swaps[mk]||0)+1;
+  save();closeModal();
+  toast('🔄 '+pick.name+'(으)로 변경!');render();
+}
+function closeModal(){document.getElementById('modal').innerHTML=''}
+
+// --- Reward ---
+function checkRewardUnlock(){
+  if(!S.reward.img)return;
+  if(getMonthCount()===GOAL){showConfetti();toast('👑 왕실 구매 허가!! 사세요!!');}
+}
+function changeReward(){
+  showPriceUpload();
+}
+function startCrop(input){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){showCropModal(e.target.result)};
+  reader.readAsDataURL(file);
+}
+function showCropModal(src){
+  var h='<div class="crop-modal">';
+  h+='<div class="crop-title">드래그로 위치 조정 ✂️</div>';
+  h+='<div class="crop-area" id="cropArea"><img id="cropImg" src="'+src+'"></div>';
+  h+='<div class="crop-btns">';
+  h+='<button class="crop-cancel" onclick="closeModal()">취소</button>';
+  h+='<button class="crop-save" onclick="saveCrop()">완료 ✨</button>';
+  h+='</div></div>';
+  document.getElementById('modal').innerHTML=h;
+  var img=document.getElementById('cropImg');
+  img.onload=function(){
+    var area=document.getElementById('cropArea');
+    var aw=area.offsetWidth,ah=area.offsetHeight;
+    var iw=img.naturalWidth,ih=img.naturalHeight;
+    var scale;
+    if(iw/ih>1){scale=ah/ih;} else {scale=aw/iw;}
+    img.style.width=(iw*scale)+'px';
+    img.style.height=(ih*scale)+'px';
+    img.style.left=((aw-iw*scale)/2)+'px';
+    img.style.top=((ah-ih*scale)/2)+'px';
+    var sx,sy,sl,st;
+    function onStart(e){
+      e.preventDefault();
+      var p=e.touches?e.touches[0]:e;
+      sx=p.clientX;sy=p.clientY;
+      sl=parseFloat(img.style.left)||0;
+      st=parseFloat(img.style.top)||0;
+    }
+    function onMove(e){
+      if(sx===undefined)return;
+      e.preventDefault();
+      var p=e.touches?e.touches[0]:e;
+      var dx=p.clientX-sx,dy=p.clientY-sy;
+      img.style.left=(sl+dx)+'px';
+      img.style.top=(st+dy)+'px';
+    }
+    function onEnd(){sx=undefined}
+    area.addEventListener('touchstart',onStart,{passive:false});
+    area.addEventListener('touchmove',onMove,{passive:false});
+    area.addEventListener('touchend',onEnd);
+    area.addEventListener('mousedown',onStart);
+    area.addEventListener('mousemove',onMove);
+    area.addEventListener('mouseup',onEnd);
+  };
+}
+function saveCrop(){
+  var area=document.getElementById('cropArea');
+  var img=document.getElementById('cropImg');
+  var canvas=document.createElement('canvas');
+  canvas.width=240;canvas.height=240;
+  var ctx=canvas.getContext('2d');
+  var l=parseFloat(img.style.left)||0;
+  var t=parseFloat(img.style.top)||0;
+  var dw=parseFloat(img.style.width);
+  var dh=parseFloat(img.style.height);
+  var sx=-l/dw*img.naturalWidth;
+  var sy=-t/dh*img.naturalHeight;
+  var sw=240/dw*img.naturalWidth;
+  var sh=240/dh*img.naturalHeight;
+  ctx.drawImage(img,sx,sy,sw,sh,0,0,240,240);
+  S.reward.img=canvas.toDataURL('image/jpeg',0.85);
+  S.reward.month=curMonthKey();
+  save();closeModal();render();toast('왕실 심사 접수 완료! 👑');
+}
+
+function showConfetti(){
+  var c=document.createElement('div');c.className='confetti';
+  var colors=['#FF6B9D','#FFB3C6','#fbbf24','#a78bfa','#34d399','#60a5fa','#FF8FB1'];
+  for(var i=0;i<50;i++){
+    var p=document.createElement('div');p.className='confetti-piece';
+    p.style.left=Math.random()*100+'%';
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=Math.random()*1.2+'s';
+    p.style.width=(6+Math.random()*8)+'px';
+    p.style.height=(6+Math.random()*8)+'px';
+    c.appendChild(p);
+  }
+  document.body.appendChild(c);
+  setTimeout(function(){c.remove()},3500);
+}
+
+// migrate old history format
+S.history.forEach(function(h){
+  if(!h.year){
+    var parts=h.date.split('/');
+    var now=new Date();
+    h.month=parseInt(parts[0])-1;
+    h.day=parseInt(parts[1]);
+    h.year=now.getFullYear();
+  }
+});
+save();
+render();
+
+// floating sparkles
+(function(){
+  var box=document.createElement('div');box.className='sparkles';
+  var items=['✦','♡','✧','⋆','♥','✦','✧','⋆','♡','✦','✧','♡'];
+  for(var i=0;i<12;i++){
+    var s=document.createElement('span');s.className='sparkle';
+    s.textContent=items[i];
+    s.style.left=Math.random()*100+'%';
+    s.style.fontSize=(20+Math.random()*35)+'px';
+    s.style.animationDuration=(13+Math.random()*20)+'s';
+    s.style.animationDelay=(Math.random()*15)+'s';
+    s.style.color=['#FFB6D9','#D8A7FF','#A0D4FF','#FF69B4','#FFD1E8'][Math.floor(Math.random()*5)];
+    box.appendChild(s);
+  }
+  document.body.appendChild(box);
+})();
+</script>
+</body>
+</html>
