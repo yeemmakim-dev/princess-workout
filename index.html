@@ -680,6 +680,7 @@ function renderReward(){
     // ---- Info section ----
     h+='<div class="safe-info">';
 
+    if(S.reward.name) h+='<div class="safe-price" style="font-size:17px;margin-bottom:2px">🏷️ '+S.reward.name+'</div>';
     if(S.reward.price) h+='<div class="safe-price">💰 '+S.reward.price+'</div>';
 
     h+='<div class="safe-progress-label">소비 정당화 게이지</div>';
@@ -711,8 +712,9 @@ function showPriceUpload(){
   var h='<div class="skip-modal" onclick="if(event.target===this)closeModal()">';
   h+='<div class="skip-box">';
   h+='<h3>👑 왕실 구매 심사 제출</h3>';
-  h+='<p>이번 달 완주하면 사고 싶은 것의<br>사진과 가격을 제출해주세요!</p>';
-  h+='<div class="price-row"><span>💰</span><input type="text" id="priceInput" placeholder="예: 39,000원"></div>';
+  h+='<p>이번 달 완주하면 사고 싶은 것의<br>이름, 사진, 가격을 제출해주세요!</p>';
+  h+='<div class="price-row"><span>🏷️</span><input type="text" id="nameInput" placeholder="예: 에어팟 맥스" value="'+(S.reward.name||'')+'"></div>';
+  h+='<div class="price-row"><span>💰</span><input type="text" id="priceInput" placeholder="예: 39,000원" value="'+(S.reward.price||'')+'"></div>';
   h+='<div style="margin-top:14px">';
   h+='<button class="complete-btn" onclick="triggerFileUpload()">📸 사진 선택</button>';
   h+='</div>';
@@ -721,8 +723,9 @@ function showPriceUpload(){
   document.getElementById('modal').innerHTML=h;
 }
 function triggerFileUpload(){
+  var name=document.getElementById('nameInput').value;
   var price=document.getElementById('priceInput').value;
-  S.reward.price=price;save();
+  S.reward.name=name;S.reward.price=price;save();
   document.getElementById('rwdFilePrincess').click();
 }
 function startCropWithPrice(input){
