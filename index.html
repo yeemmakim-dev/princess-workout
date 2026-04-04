@@ -379,8 +379,8 @@ function pickRandom(arr,n,rng){
 function generateRoutine(idx){
   var seed=idx*7919+31;
   var rng=seededRand(seed);
-  var labels=['A','B','C'];
-  var icons=['👸','💎','🌸'];
+  var labels=['A','C','B'];
+  var icons=['👸','🌸','💎'];
   var li=idx%3;
   var base=[
     pickRandom(POOL.compound,1,rng)[0],
