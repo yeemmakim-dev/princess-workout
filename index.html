@@ -60,9 +60,10 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 
 /* ---- Vault Assembly (PNG frame, transparent heart) ---- */
 .safe-assembly{position:relative;width:240px;height:360px;margin:0 auto}
-/* Reward image BEHIND the frame, visible through heart hole */
-.safe-img-layer{position:absolute;z-index:1;pointer-events:none;overflow:hidden;
-  top:68px;left:48px;width:143px;height:120px}
+/* Reward image BEHIND the frame, clipped to heart shape */
+.safe-img-layer{position:absolute;inset:0;z-index:1;pointer-events:none;
+  clip-path:polygon(117.1px 119.1px,117.5px 116.9px,119.8px 111.4px,125.4px 105px,134.3px 100.4px,145px 99.9px,155.4px 103.9px,162.9px 111.8px,165.7px 121.9px,162.9px 132.5px,155.4px 142.5px,145px 151.7px,134.3px 160.3px,125.4px 168.2px,119.8px 175px,117.5px 179.6px,117.1px 181.2px,116.8px 179.6px,114.4px 175px,108.8px 168.2px,99.9px 160.3px,89.2px 151.7px,78.8px 142.5px,71.3px 132.5px,68.5px 121.9px,71.3px 111.8px,78.8px 103.9px,89.2px 99.9px,99.9px 100.4px,108.8px 105px,114.4px 111.4px,116.8px 116.9px)}
+.safe-img-layer img{position:absolute;top:88px;left:60px;width:120px;height:105px;object-fit:cover;object-position:center}
 .safe-img-layer img{width:100%;height:100%;object-fit:cover;object-position:center;transition:filter .5s}
 /* PNG safe frame ON TOP (has transparent heart hole) */
 .safe-frame-img{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;object-fit:contain;transition:filter .4s}
