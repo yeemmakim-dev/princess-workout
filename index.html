@@ -656,13 +656,13 @@ function renderReward(){
     h+='<div class="safe-upload" onclick="showPriceUpload()">';
     h+='<div class="safe-upload-icon">👑</div>';
     h+='<div class="safe-upload-title">'+ml+' 왕실 구매 심사 품목</div>';
-    h+='<div class="safe-upload-text">왕실 재무부가 다음 심사 품목을 기다리는 중입니다<b>👑 왕실 구매 심사 제출하기</b></div>';
+    h+='<div class="safe-upload-text">왕실 재무부가 다음 심사 품목을 기다리는 중입니다<b>✨ 왕실 구매 심사 제출하기</b></div>';
     h+='</div></div>';
   } else {
     // --- The Safe Card ---
     h+='<div class="safe-card stage-'+stage.key+'">';
     h+='<div class="safe-header">';
-    h+='<span class="safe-header-title">'+(unlocked?'🎉 구매 허가 승인':'👑 '+ml+' 왕실 구매 심사 품목')+'</span>';
+    h+='<span class="safe-header-title">'+(unlocked?'🎉 구매 허가 승인':'✨'+ml+' 왕실 구매 심사 품목')+'</span>';
     h+='<button class="safe-header-edit" onclick="changeReward()">변경</button>';
     h+='</div>';
     h+='<div class="safe-body">';
@@ -711,7 +711,7 @@ function renderReward(){
 function showPriceUpload(){
   var h='<div class="skip-modal" onclick="if(event.target===this)closeModal()">';
   h+='<div class="skip-box">';
-  h+='<h3>👑 왕실 구매 심사 제출</h3>';
+  h+='<h3>✨ 왕실 구매 심사 제출</h3>';
   h+='<p>이번 달 완주하면 사고 싶은 것의<br>이름, 사진, 가격을 제출해주세요!</p>';
   h+='<div class="price-row"><span>🏷️</span><input type="text" id="nameInput" placeholder="예: 에어팟 맥스" value="'+(S.reward.name||'')+'"></div>';
   h+='<div class="price-row"><span>💰</span><input type="text" id="priceInput" placeholder="예: 39,000원" value="'+(S.reward.price||'')+'"></div>';
@@ -1107,7 +1107,7 @@ function closeModal(){document.getElementById('modal').innerHTML=''}
 // --- Reward ---
 function checkRewardUnlock(){
   if(!S.reward.img)return;
-  if(getMonthCount()===GOAL){showConfetti();toast('👑 왕실 구매 허가!! 사세요!!');}
+  if(getMonthCount()===GOAL){showConfetti();toast('✨ 왕실 구매 허가!! 사세요!!');}
 }
 function changeReward(){
   showPriceUpload();
