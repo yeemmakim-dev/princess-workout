@@ -994,30 +994,32 @@ function togExtraSet(ei,si){
   S.sets[key]=!S.sets[key];save();render();
 }
 function showAddExtraModal(){
-  var allEx=[];
-  ['compound','hinge','pull','push','core'].forEach(function(cat){
-    POOL[cat].forEach(function(ex){allEx.push(ex)});
-  });
+  var cats=[
+    {key:'compound',label:'🏋️ 복합'},
+    {key:'hinge',label:'🍑 힌지'},
+    {key:'pull',label:'💪 당기기'},
+    {key:'push',label:'✊ 밀기'},
+    {key:'core',label:'🔥 코어'}
+  ];
   var h='<div class="skip-modal" onclick="if(event.target===this)closeModal()">';
   h+='<div class="skip-box" style="max-height:80vh;overflow-y:auto">';
   h+='<h3>💪 운동 추가하기</h3>';
-  h+='<p style="font-size:12px;color:var(--tm)">원하는 운동을 선택하세요</p>';
-  h+='<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px">';
-  allEx.forEach(function(ex,i){
-    h+='<button class="btn-ghost" style="text-align:left;padding:10px 12px;font-size:13px" onclick="addExtra('+i+')"><strong>'+ex.name+'</strong> <span style="color:var(--th);font-size:11px">'+ex.sets+'세트×'+ex.reps+(typeof ex.reps==='number'?'회':'')+'</span></button>';
+  cats.forEach(function(cat){
+    h+='<div style="margin-top:12px"><div style="font-size:13px;font-weight:700;color:var(--c);margin-bottom:5px">'+cat.label+'</div>';
+    h+='<div style="display:flex;flex-direction:column;gap:4px">';
+    POOL[cat.key].forEach(function(ex){
+      h+='<button class="btn-ghost" style="text-align:left;padding:8px 12px;font-size:13px" onclick="addExtraByName(\''+ex.name+'\','+ex.sets+',\''+ex.reps+'\')"><strong>'+ex.name+'</strong> <span style="color:var(--th);font-size:11px">'+ex.sets+'세트×'+ex.reps+(typeof ex.reps==='number'?'회':'')+'</span></button>';
+    });
+    h+='</div></div>';
   });
-  h+='</div></div></div>';
+  h+='</div></div>';
   document.getElementById('modal').innerHTML=h;
 }
-function addExtra(poolIdx){
-  var allEx=[];
-  ['compound','hinge','pull','push','core'].forEach(function(cat){
-    POOL[cat].forEach(function(ex){allEx.push(ex)});
-  });
-  var ex=allEx[poolIdx];
-  S.extras.push({name:ex.name,sets:ex.sets,reps:ex.reps});
+function addExtraByName(name,sets,reps){
+  var r=isNaN(Number(reps))?reps:Number(reps);
+  S.extras.push({name:name,sets:sets,reps:r});
   save();closeModal();render();
-  toast(ex.name+' 추가! 💪');
+  toast(name+' 추가! 💪');
 }
 function goBack(){
   if(S.idx>0){
