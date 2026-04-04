@@ -433,6 +433,7 @@ if(!S.history)S.history=[];
 if(!S.reward)S.reward={};
 if(!S.swaps)S.swaps={};
 if(!S.swapped)S.swapped={};
+if(!S.extras)S.extras=[];
 if(!S.streak)S.streak=0;
 var curTab=0;
 var calYear,calMonth;
@@ -589,7 +590,28 @@ function renderWorkout(){
       var next=getRoutineForCycle(S.idx+1);
       h+='<div class="done-card">';
       h+='<h2>👸✨ 수련 완료!</h2>';
-      h+='<p>고생했어요!<br>다음: <strong>'+next.icon+' '+next.name+'</strong></p>';
+      // 추가 운동 목록
+      if(S.extras.length>0){
+        h+='<div style="margin:10px 0;text-align:left;width:100%">';
+        h+='<div style="font-size:13px;color:var(--tm);font-weight:700;margin-bottom:6px">💪 추가 운동</div>';
+        h+='<div class="ex-list">';
+        S.extras.forEach(function(ex,i){
+          var exDone=true;
+          for(var s=0;s<ex.sets;s++){if(!S.sets['ex_'+i+'_'+s]){exDone=false;break;}}
+          h+='<div class="ex-card'+(exDone?' done':'')+'">';
+          h+='<div class="ex-name">'+ex.name+'</div>';
+          h+='<div class="ex-desc">'+ex.sets+'세트 × '+ex.reps+(typeof ex.reps==='number'?'회':'')+'</div>';
+          h+='<div class="ex-sets">';
+          for(var s=0;s<ex.sets;s++){
+            var done=S.sets['ex_'+i+'_'+s];
+            h+='<button class="set-btn'+(done?' done':'')+'" onclick="togExtraSet('+i+','+s+')">'+(done?'✓':(s+1))+'</button>';
+          }
+          h+='</div></div>';
+        });
+        h+='</div></div>';
+      }
+      h+='<button class="btn-ghost" style="margin:8px 0;font-size:13px" onclick="showAddExtraModal()">💪 운동 추가하기</button>';
+      h+='<p>다음: <strong>'+next.icon+' '+next.name+'</strong></p>';
       h+='<div class="done-btns">';
       h+='<button class="btn-primary" onclick="nextRoutine(true)">바로 다음 하기 →</button>';
       h+='<button class="btn-ghost" onclick="nextRoutine(false)">다음에 할게요 👋</button>';
@@ -964,7 +986,38 @@ function nextRoutine(doNow){
   S.idx++;S.sets={};save();
   if(doNow)toast(curRoutine().icon+' '+curRoutine().name+' 시작!');
   else toast('다음에 할게요! 👋');
+  S.extras=[];save();
   render();checkRewardUnlock();
+}
+function togExtraSet(ei,si){
+  var key='ex_'+ei+'_'+si;
+  S.sets[key]=!S.sets[key];save();render();
+}
+function showAddExtraModal(){
+  var allEx=[];
+  ['compound','hinge','pull','push','core'].forEach(function(cat){
+    POOL[cat].forEach(function(ex){allEx.push(ex)});
+  });
+  var h='<div class="skip-modal" onclick="if(event.target===this)closeModal()">';
+  h+='<div class="skip-box" style="max-height:80vh;overflow-y:auto">';
+  h+='<h3>💪 운동 추가하기</h3>';
+  h+='<p style="font-size:12px;color:var(--tm)">원하는 운동을 선택하세요</p>';
+  h+='<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px">';
+  allEx.forEach(function(ex,i){
+    h+='<button class="btn-ghost" style="text-align:left;padding:10px 12px;font-size:13px" onclick="addExtra('+i+')"><strong>'+ex.name+'</strong> <span style="color:var(--th);font-size:11px">'+ex.sets+'세트×'+ex.reps+(typeof ex.reps==='number'?'회':'')+'</span></button>';
+  });
+  h+='</div></div></div>';
+  document.getElementById('modal').innerHTML=h;
+}
+function addExtra(poolIdx){
+  var allEx=[];
+  ['compound','hinge','pull','push','core'].forEach(function(cat){
+    POOL[cat].forEach(function(ex){allEx.push(ex)});
+  });
+  var ex=allEx[poolIdx];
+  S.extras.push({name:ex.name,sets:ex.sets,reps:ex.reps});
+  save();closeModal();render();
+  toast(ex.name+' 추가! 💪');
 }
 function goBack(){
   if(S.idx>0){
