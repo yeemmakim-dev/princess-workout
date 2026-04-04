@@ -574,7 +574,11 @@ function renderWorkout(){
       h+='<div class="done-card">';
       h+='<h2>👸✨ 수련 완료!</h2>';
       h+='<p>고생했어요!<br>다음: <strong>'+next.icon+' '+next.name+'</strong></p>';
-      h+='</div>';
+      h+='<div class="done-btns">';
+      h+='<button class="btn-primary" onclick="nextRoutine(true)">바로 다음 하기 →</button>';
+      h+='<button class="btn-ghost" onclick="nextRoutine(false)">다음에 할게요 👋</button>';
+      h+='<button class="btn-skip" onclick="goBack()" style="margin-top:4px">↩ 잘못 눌렀어요! 되돌리기</button>';
+      h+='</div></div>';
     }
   }
   document.getElementById('app').innerHTML=h;
