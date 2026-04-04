@@ -605,7 +605,7 @@ var SAFE_STAGES=[
   {key:'review',label:'심사 중',sub:'심사 진행 중',max:44},
   {key:'examining',label:'검토 중',sub:'구매 허가 검토 중',max:74},
   {key:'preapproved',label:'승인 직전',sub:'',max:99},
-  {key:'approved',label:'사도 됨',sub:'구매 허가 승인',max:100}
+  {key:'approved',label:'사도 됨',sub:'',max:100}
 ];
 var SAFE_COMMENTS_LOCKED=[
   '아직 왕실 허가가 나지 않았어요.',
@@ -679,7 +679,6 @@ function renderReward(){
       h+='<span class="safe-sparkle" style="left:'+sp[i][0]+';top:'+sp[i][1]+';animation-delay:'+sp[i][2]+';font-size:12px">'+sc[i]+'</span>';
     }
     h+='</div>';
-    h+='<div class="safe-stamp">사도 됨</div>';
     h+='</div>'; // safe-assembly
     h+='<div class="safe-status">';
     h+='<div class="safe-status-badge">'+stage.label+'</div>';
