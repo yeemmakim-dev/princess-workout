@@ -959,7 +959,7 @@ function completeCardio(ci){
   render();checkRewardUnlock();
 }
 function nextRoutine(doNow){
-  addHistory(curRoutine());S.idx++;S.sets={};save();
+  S.idx++;S.sets={};save();
   if(doNow)toast(curRoutine().icon+' '+curRoutine().name+' 시작!');
   else toast('다음에 할게요! 👋');
   render();checkRewardUnlock();
