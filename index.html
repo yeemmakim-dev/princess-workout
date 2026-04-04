@@ -434,6 +434,7 @@ if(!S.reward)S.reward={};
 if(!S.swaps)S.swaps={};
 if(!S.swapped)S.swapped={};
 if(!S.extras)S.extras=[];
+if(!S.customPool)S.customPool=[];
 if(!S.streak)S.streak=0;
 var curTab=0;
 var calYear,calMonth;
@@ -1004,6 +1005,23 @@ function showAddExtraModal(){
   var h='<div class="skip-modal" onclick="if(event.target===this)closeModal()">';
   h+='<div class="skip-box" style="max-height:80vh;overflow-y:auto">';
   h+='<h3>💪 운동 추가하기</h3>';
+  h+='<div style="background:var(--sf);border-radius:12px;padding:12px;margin-top:8px">';
+  h+='<div style="font-size:13px;font-weight:700;color:var(--c);margin-bottom:8px">✏️ 직접 입력</div>';
+  h+='<input type="text" id="customName" placeholder="운동 이름" style="width:100%;padding:8px;border:2px solid var(--c3);border-radius:10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--tx);margin-bottom:6px">';
+  h+='<div style="display:flex;gap:6px">';
+  h+='<input type="number" id="customSets" placeholder="세트" value="3" style="flex:1;padding:8px;border:2px solid var(--c3);border-radius:10px;font-size:13px;text-align:center;font-family:inherit;background:var(--bg);color:var(--tx)">';
+  h+='<input type="text" id="customReps" placeholder="회/초" value="10" style="flex:1;padding:8px;border:2px solid var(--c3);border-radius:10px;font-size:13px;text-align:center;font-family:inherit;background:var(--bg);color:var(--tx)">';
+  h+='<button class="btn-primary" style="padding:8px 14px;font-size:13px;white-space:nowrap" onclick="addCustomExtra()">추가</button>';
+  h+='</div></div>';
+  h+='<div style="font-size:11px;color:var(--th);margin-top:12px;text-align:center">— 또는 아래에서 선택 —</div>';
+  if(S.customPool&&S.customPool.length>0){
+    h+='<div style="margin-top:12px"><div style="font-size:13px;font-weight:700;color:var(--c);margin-bottom:5px">⭐ 내 운동</div>';
+    h+='<div style="display:flex;flex-direction:column;gap:4px">';
+    S.customPool.forEach(function(ex){
+      h+='<button class="btn-ghost" style="text-align:left;padding:8px 12px;font-size:13px" onclick="addExtraByName(\''+ex.name+'\','+ex.sets+',\''+ex.reps+'\')"><strong>'+ex.name+'</strong> <span style="color:var(--th);font-size:11px">'+ex.sets+'세트×'+ex.reps+(typeof ex.reps==='number'?'회':'')+'</span></button>';
+    });
+    h+='</div></div>';
+  }
   cats.forEach(function(cat){
     h+='<div style="margin-top:12px"><div style="font-size:13px;font-weight:700;color:var(--c);margin-bottom:5px">'+cat.label+'</div>';
     h+='<div style="display:flex;flex-direction:column;gap:4px">';
@@ -1014,6 +1032,19 @@ function showAddExtraModal(){
   });
   h+='</div></div>';
   document.getElementById('modal').innerHTML=h;
+}
+function addCustomExtra(){
+  var name=document.getElementById('customName').value.trim();
+  if(!name){toast('운동 이름을 입력해주세요!');return;}
+  var sets=parseInt(document.getElementById('customSets').value)||3;
+  var reps=document.getElementById('customReps').value.trim()||'10';
+  var r=isNaN(Number(reps))?reps:Number(reps);
+  S.extras.push({name:name,sets:sets,reps:r});
+  if(!S.customPool)S.customPool=[];
+  var exists=S.customPool.some(function(e){return e.name===name});
+  if(!exists)S.customPool.push({name:name,sets:sets,reps:r});
+  save();closeModal();render();
+  toast(name+' 추가! 💪');
 }
 function addExtraByName(name,sets,reps){
   var r=isNaN(Number(reps))?reps:Number(reps);
