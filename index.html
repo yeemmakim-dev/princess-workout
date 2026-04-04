@@ -534,7 +534,10 @@ function renderWorkout(){
     h+='<div class="progress-text">'+doneSets+' / '+totalSets+' 세트 ('+pct+'%)</div>';
 
     if(!allDone){
-      h+='<div style="text-align:center;font-size:14px;color:var(--tm);margin-bottom:8px;font-weight:700">🏰 왕실이 지정한 오늘의 근력 퀘스트</div>';
+      h+='<div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:8px">';
+      h+='<span style="font-size:14px;color:var(--tm);font-weight:700">🏰 왕실이 지정한 오늘의 근력 퀘스트</span>';
+      h+='<span style="font-size:11px;color:var(--th);font-weight:500">🔄 변경 '+getSwapsUsed()+'/'+SWAP_MAX+'</span>';
+      h+='</div>';
       h+='<div class="ex-list">';
       r.exercises.forEach(function(ex,i){
         var exDone=true;
@@ -686,8 +689,6 @@ function renderReward(){
       var comment=unlocked?getSafeComment(100,count):(getRoyalComment(count));
       h+='<div class="safe-comment">💬 '+comment+'</div>';
     }
-
-    h+='<div class="safe-swaps">🔄 운동 변경 '+swaps+'/'+SWAP_MAX+'회'+(swapsLeft>0?' ('+swapsLeft+'번 남음)':' (소진)')+'</div>';
 
     h+='</div>'; // safe-info
     h+='</div>'; // safe-body
