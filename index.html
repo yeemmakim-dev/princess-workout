@@ -52,7 +52,7 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 /* ========== Royal Pink Safe Card v3 ========== */
 .safe-card{margin:14px 0;border-radius:var(--r2);overflow:visible;position:relative;background:linear-gradient(150deg,#FFF2FA,#F8EAFF,#FFF0F8);border:2.5px solid var(--c3);box-shadow:var(--glow);transition:all .4s}
 @media(prefers-color-scheme:dark){.safe-card{background:linear-gradient(150deg,#2A1A28,#241A30,#2A1A2F);border-color:#6B3050}}
-.safe-card.stage-preapproved,.safe-card.stage-approved{border-color:#FF4081;box-shadow:0 6px 30px rgba(255,64,129,.22),var(--glow)}
+.safe-card.stage-preapproved,.safe-card.stage-approved{border-color:#FF6B9D;box-shadow:0 6px 30px rgba(255,107,157,.22),var(--glow)}
 .safe-header{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 8px}
 .safe-header-title{font-size:17px;font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,var(--c),#C878D0,var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;text-align:center}
 .safe-header-edit{font-size:12px;color:var(--tm);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;flex-shrink:0}
@@ -92,24 +92,24 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 .stage-stored .safe-status-badge{background:rgba(200,180,190,.18);color:var(--tm)}
 .stage-review .safe-status-badge{background:rgba(255,105,180,.1);color:var(--c)}
 .stage-examining .safe-status-badge{background:rgba(255,105,180,.15);color:var(--cd)}
-.stage-preapproved .safe-status-badge{background:linear-gradient(135deg,rgba(255,64,129,.15),rgba(255,105,180,.12));color:#E91E78;border:1.5px solid rgba(255,64,129,.35);font-size:15px}
+.stage-preapproved .safe-status-badge{background:linear-gradient(135deg,rgba(255,107,157,.15),rgba(255,105,180,.12));color:#FF69B4;border:1.5px solid rgba(255,107,157,.35);font-size:15px}
 .stage-approved .safe-status-badge{background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;box-shadow:0 4px 14px rgba(255,105,180,.3);font-size:15px}
 .safe-status-sub{font-size:12px;color:var(--tm);margin-top:4px;font-weight:500}
 
 .safe-info{width:100%}
-.safe-price{font-size:16px;color:#E91E78;font-weight:900;text-align:center}
+.safe-price{font-size:16px;color:#FF69B4;font-weight:900;text-align:center}
 .safe-progress-label{font-size:13px;color:var(--tm);margin-top:10px;font-weight:700}
 .safe-progress-wrap{display:flex;align-items:center;gap:8px;margin-top:5px}
 .safe-progress-bar{flex:1;height:12px;background:var(--bd);border-radius:6px;overflow:hidden}
 .safe-progress-fill{height:100%;border-radius:6px;transition:width .5s;background:linear-gradient(90deg,var(--c3),var(--c),var(--c4))}
-.stage-preapproved .safe-progress-fill,.stage-approved .safe-progress-fill{background:linear-gradient(90deg,var(--c),#FF4081,#FF80AB)}
+.stage-preapproved .safe-progress-fill,.stage-approved .safe-progress-fill{background:linear-gradient(90deg,var(--c),#FF6B9D,#FFB3C6)}
 .safe-progress-pct{font-size:16px;font-weight:900;background:linear-gradient(135deg,var(--c),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:40px;text-align:right}
 
 .safe-comment{font-size:13px;color:var(--tx);margin-top:10px;padding:10px 14px;background:rgba(255,105,180,.05);border-radius:12px;line-height:1.6;border-left:3.5px solid var(--c);font-style:italic;text-align:left;font-weight:500}
 .safe-days-left{font-size:13px;color:var(--tm);margin-top:8px;text-align:center;font-weight:700}
 .safe-swaps{font-size:12px;color:var(--tm);margin-top:4px;text-align:center;font-weight:500}
 
-.safe-cta{margin-top:10px;padding:14px;background:linear-gradient(135deg,#FF4081,#FF80AB);color:#fff;border:none;border-radius:16px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;width:100%;box-shadow:0 4px 15px rgba(255,64,129,.35);transition:transform .15s;letter-spacing:.5px}
+.safe-cta{margin-top:10px;padding:14px;background:linear-gradient(135deg,#FF6B9D,#FFB3C6);color:#fff;border:none;border-radius:16px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;width:100%;box-shadow:0 4px 15px rgba(255,107,157,.35);transition:transform .15s;letter-spacing:.5px}
 .safe-cta:active{transform:scale(.94)}
 
 /* Upload empty state */
@@ -219,18 +219,18 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 .complete-btn:active{transform:scale(.92)}
 
 /* Unlock popup — 20/20 */
-.unlock-box{background:linear-gradient(150deg,#FFF0F0,#FFF0F8,#F8EAFF)!important;border:3px solid #FF4081;box-shadow:0 10px 50px rgba(255,64,129,.25),0 0 80px rgba(255,105,180,.15)!important;padding:32px 24px!important}
-@media(prefers-color-scheme:dark){.unlock-box{background:linear-gradient(150deg,#2A1818,#2A1A28,#241A30)!important;border-color:#C2185B}}
+.unlock-box{background:linear-gradient(150deg,#FFF0F0,#FFF0F8,#F8EAFF)!important;border:3px solid #FF6B9D;box-shadow:0 10px 50px rgba(255,107,157,.25),0 0 80px rgba(255,105,180,.15)!important;padding:32px 24px!important}
+@media(prefers-color-scheme:dark){.unlock-box{background:linear-gradient(150deg,#2A1818,#2A1A28,#241A30)!important;border-color:#E0408A}}
 .unlock-crown{font-size:56px;animation:floaty 2s ease-in-out infinite;margin-bottom:4px}
 .unlock-stamp{display:inline-block;font-size:24px;font-weight:900;color:#D42B2B;border:5px double #D42B2B;outline:3px solid rgba(212,43,43,.35);outline-offset:3px;border-radius:10px;padding:10px 22px;letter-spacing:4px;white-space:nowrap;transform:rotate(-9deg);font-family:'Gowun Batang',Georgia,serif;margin:16px 0;text-shadow:0 2px 4px rgba(212,43,43,.25);box-shadow:inset 0 0 0 2px rgba(212,43,43,.15),0 4px 20px rgba(212,43,43,.2),0 0 40px rgba(255,105,180,.18);animation:unlockStamp .4s ease-out forwards}
 @keyframes unlockStamp{0%{transform:rotate(-9deg) scale(3);opacity:0}70%{transform:rotate(-9deg) scale(.95);opacity:1}100%{transform:rotate(-9deg) scale(1);opacity:1}}
 .unlock-stats{display:flex;justify-content:center;gap:16px;margin:12px 0}
-.unlock-stat{font-size:13px;color:var(--tm);padding:6px 14px;background:rgba(255,64,129,.08);border-radius:12px;border:1px solid rgba(255,64,129,.2)}
-.unlock-stat b{color:#E91E78;font-weight:900}
-.unlock-comment{position:relative;font-size:16px;font-weight:700;color:#880E4F;margin:16px 0 6px;padding:18px 16px 14px;background:linear-gradient(160deg,#FFF0F0,#FFF5F5,#FFECEC);border-radius:14px;border:2px solid #FF4081;line-height:1.6;box-shadow:inset 0 1px 3px rgba(255,64,129,.1),0 2px 8px rgba(255,64,129,.08)}
-@media(prefers-color-scheme:dark){.unlock-comment{background:linear-gradient(160deg,#2A1A1A,#28181A,#2A1818);color:#F0A0A8;border-color:#C2185B}
+.unlock-stat{font-size:13px;color:var(--tm);padding:6px 14px;background:rgba(255,107,157,.08);border-radius:12px;border:1px solid rgba(255,107,157,.2)}
+.unlock-stat b{color:#FF69B4;font-weight:900}
+.unlock-comment{position:relative;font-size:16px;font-weight:700;color:#D84888;margin:16px 0 6px;padding:18px 16px 14px;background:linear-gradient(160deg,#FFF0F0,#FFF5F5,#FFECEC);border-radius:14px;border:2px solid #FF6B9D;line-height:1.6;box-shadow:inset 0 1px 3px rgba(255,107,157,.1),0 2px 8px rgba(255,107,157,.08)}
+@media(prefers-color-scheme:dark){.unlock-comment{background:linear-gradient(160deg,#2A1A1A,#28181A,#2A1818);color:#F0A0A8;border-color:#E0408A}
 .unlock-comment::before{background:linear-gradient(160deg,#2A2418,#28201A)}}
-.unlock-congrats{font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--c),#FF4081,#FF80AB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:6px;letter-spacing:.5px}
+.unlock-congrats{font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--c),#FF6B9D,#FFB3C6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:6px;letter-spacing:.5px}
 
 /* Price input in upload */
 .price-row{display:flex;align-items:center;gap:8px;margin-top:12px;justify-content:center}
