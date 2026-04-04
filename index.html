@@ -1007,11 +1007,11 @@ function showAddExtraModal(){
   h+='<h3>💪 운동 추가하기</h3>';
   h+='<div style="background:var(--sf);border-radius:12px;padding:12px;margin-top:8px">';
   h+='<div style="font-size:13px;font-weight:700;color:var(--c);margin-bottom:8px">✏️ 직접 입력</div>';
-  h+='<div style="display:flex;gap:6px;align-items:center">';
-  h+='<input type="text" id="customName" placeholder="운동 이름" style="flex:3;padding:8px;border:2px solid var(--c3);border-radius:10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--tx);box-sizing:border-box">';
+  h+='<input type="text" id="customName" placeholder="운동 이름" style="width:100%;padding:8px;border:2px solid var(--c3);border-radius:10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--tx);box-sizing:border-box;margin-bottom:6px">';
+  h+='<div style="display:flex;gap:6px">';
   h+='<input type="number" id="customSets" placeholder="세트" value="3" style="flex:1;padding:8px;border:2px solid var(--c3);border-radius:10px;font-size:13px;text-align:center;font-family:inherit;background:var(--bg);color:var(--tx);box-sizing:border-box">';
   h+='<input type="text" id="customReps" placeholder="회/초" value="10" style="flex:1;padding:8px;border:2px solid var(--c3);border-radius:10px;font-size:13px;text-align:center;font-family:inherit;background:var(--bg);color:var(--tx);box-sizing:border-box">';
-  h+='<button class="btn-primary" style="padding:8px 12px;font-size:13px;white-space:nowrap" onclick="addCustomExtra()">추가</button>';
+  h+='<button class="btn-primary" style="padding:8px 14px;font-size:13px;white-space:nowrap" onclick="addCustomExtra()">추가</button>';
   h+='</div></div>';
   h+='<div style="font-size:11px;color:var(--th);margin-top:12px;text-align:center">— 또는 아래에서 선택 —</div>';
   if(S.customPool&&S.customPool.length>0){
