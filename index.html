@@ -832,17 +832,19 @@ function drawChart(){
   var W=canvas.offsetWidth,H=200;
   var data=S.weights.slice(-20);
   var vals=data.map(function(w){return w.kg});
-  var min=Math.min.apply(null,vals)-1;
-  var max=Math.max.apply(null,vals)+1;
+  var minV=Math.min.apply(null,vals);
+  var maxV=Math.max.apply(null,vals);
+  var min=Math.floor(minV)-1;
+  var max=Math.ceil(maxV)+1;
   var range=max-min||1;
   var padL=40,padR=10,padT=15,padB=25;
   var gw=W-padL-padR,gh=H-padT-padB;
   ctx.strokeStyle='rgba(255,107,157,0.1)';ctx.lineWidth=1;
-  for(var i=0;i<5;i++){
-    var y=padT+gh*i/4;
+  for(var v=min;v<=max;v++){
+    var y=padT+(max-v)/range*gh;
     ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
     ctx.fillStyle='#bbb';ctx.font='10px sans-serif';ctx.textAlign='right';
-    ctx.fillText((max-range*i/4).toFixed(1),padL-4,y+3);
+    ctx.fillText(v,padL-4,y+3);
   }
   ctx.beginPath();
   ctx.strokeStyle='#FF6B9D';ctx.lineWidth=2.5;ctx.lineJoin='round';
