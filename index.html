@@ -547,7 +547,7 @@ function renderWorkout(){
         h+='<div class="ex-name" style="display:flex;justify-content:space-between;align-items:center">'+ex.name;
         if(!exDone&&swapsLeft>0) h+='<button onclick="showSwapConfirm('+i+')" style="font-size:10px;padding:3px 8px;border:1.5px dashed var(--c3);border-radius:8px;background:var(--sf);color:var(--th);cursor:pointer;font-family:inherit">🔄 변경</button>';
         h+='</div>';
-        h+='<div class="ex-desc">'+ex.sets+'세트 × '+ex.reps+(typeof ex.reps==='number'?'회':'')+(ex.sets<=2?' · 마무리':' · 왕실 티타임 60초')+'</div>';
+        h+='<div class="ex-desc">'+ex.sets+'세트 × '+ex.reps+(typeof ex.reps==='number'?'회':'')+(ex.sets<=2?' · 마무리':'')+'</div>';
         h+='<div class="ex-sets">';
         for(var s=0;s<ex.sets;s++){
           var done=S.sets[i+'_'+s];
@@ -560,6 +560,7 @@ function renderWorkout(){
         }
         if(!exDone&&restTimer&&restEi===i){
           h+='<div class="rest-timer" id="rest-'+i+'-'+restSi+'">';
+          h+='<span style="font-size:11px;color:var(--tm);font-weight:600;white-space:nowrap">☕ 왕실 티타임</span>';
           h+='<div class="rest-timer-bar"><div class="rest-timer-fill"></div></div>';
           h+='<div class="rest-timer-text">60초</div>';
           h+='</div>';
