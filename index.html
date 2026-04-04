@@ -806,6 +806,7 @@ function renderWeight(){
   h+='<div style="margin:24px 0;display:flex;flex-direction:column;gap:8px">';
   h+='<button class="btn-ghost" onclick="exportBackup()">📦 데이터 백업 (내보내기)</button>';
   h+='<label class="btn-ghost" style="text-align:center;cursor:pointer">📥 데이터 복원 (가져오기)<input type="file" accept=".json" style="display:none" onchange="importBackup(this)"></label>';
+  h+='<button class="btn-ghost" style="color:#E05070;border-color:#E05070" onclick="resetData()">🗑️ 기록 전체 리셋</button>';
   h+='</div>';
   document.getElementById('app').innerHTML=h;
   if(S.weights.length>=2)drawChart();
@@ -1040,6 +1041,12 @@ function importBackup(input){
     }catch(err){toast('파일을 읽을 수 없어요!');}
   };
   reader.readAsText(file);
+}
+function resetData(){
+  if(!confirm('정말 모든 기록을 리셋할까요?\n운동 기록, 보상, 몸무게 등 전부 삭제됩니다.'))return;
+  if(!confirm('되돌릴 수 없어요! 진짜 리셋할까요?'))return;
+  localStorage.removeItem('wk_princess');
+  location.reload();
 }
 function saveW(){
   var v=parseFloat(document.getElementById('wi').value);
