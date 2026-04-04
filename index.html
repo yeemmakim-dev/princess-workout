@@ -669,16 +669,8 @@ function renderReward(){
 
     // ---- Vault Assembly (PNG frame) ----
     h+='<div class="safe-assembly">';
-    h+='<div class="safe-glow"></div>';
     h+='<div class="safe-img-layer"><img src="'+S.reward.img+'" draggable="false"></div>';
     h+='<img class="safe-frame-img" src="safe-frame.png" draggable="false">';
-    h+='<div class="safe-sparkles">';
-    var sp=[['12%','22%','0s'],['82%','15%','.7s'],['88%','72%','1.4s'],['6%','80%','2.1s']];
-    var sc=['✦','♡','✧','⋆'];
-    for(var i=0;i<sp.length;i++){
-      h+='<span class="safe-sparkle" style="left:'+sp[i][0]+';top:'+sp[i][1]+';animation-delay:'+sp[i][2]+';font-size:12px">'+sc[i]+'</span>';
-    }
-    h+='</div>';
     h+='</div>'; // safe-assembly
     h+='<div class="safe-status">';
     h+='<div class="safe-status-badge">'+stage.label+'</div>';
