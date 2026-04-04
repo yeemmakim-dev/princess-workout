@@ -574,11 +574,7 @@ function renderWorkout(){
       h+='<div class="done-card">';
       h+='<h2>👸✨ 수련 완료!</h2>';
       h+='<p>고생했어요!<br>다음: <strong>'+next.icon+' '+next.name+'</strong></p>';
-      h+='<div class="done-btns">';
-      h+='<button class="btn-primary" onclick="nextRoutine(true)">바로 다음 하기 →</button>';
-      h+='<button class="btn-ghost" onclick="nextRoutine(false)">다음에 할게요 👋</button>';
-      h+='<button class="btn-skip" onclick="goBack()" style="margin-top:4px">↩ 잘못 눌렀어요! 되돌리기</button>';
-      h+='</div></div>';
+      h+='</div>';
     }
   }
   document.getElementById('app').innerHTML=h;
@@ -984,7 +980,11 @@ function showCompletePopupCustom(label, pctGain, count){
   h+='<div class="complete-item">🔥 연속 수련 <b>'+streak+'일째</b></div>';
   h+='<div class="complete-item">📊 이번 달 <b>'+count+'/'+GOAL+'회</b> 완료</div>';
   h+='<div class="complete-comment">💬 '+comment+'</div>';
-  h+='<button class="complete-btn" onclick="closeCompletePopup()">확인 👸</button>';
+  h+='<div class="done-btns" style="margin-top:14px;display:flex;flex-direction:column;gap:8px">';
+  h+='<button class="btn-primary" onclick="closeCompletePopup();nextRoutine(true)">바로 다음 하기 →</button>';
+  h+='<button class="btn-ghost" onclick="closeCompletePopup();nextRoutine(false)">다음에 할게요 👋</button>';
+  h+='<button class="btn-skip" onclick="closeCompletePopup();goBack()">↩ 잘못 눌렀어요! 되돌리기</button>';
+  h+='</div>';
   h+='</div></div>';
   document.getElementById('modal').innerHTML=h;
   showConfetti();
