@@ -226,7 +226,10 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 .unlock-stats{display:flex;justify-content:center;gap:16px;margin:12px 0}
 .unlock-stat{font-size:13px;color:var(--tm);padding:6px 14px;background:rgba(232,184,78,.1);border-radius:12px;border:1px solid rgba(232,184,78,.25)}
 .unlock-stat b{color:#C08828;font-weight:900}
-.unlock-comment{font-size:16px;font-weight:700;color:var(--tx);margin:16px 0 6px;padding:14px;background:rgba(232,184,78,.08);border-radius:14px;border:1.5px solid rgba(232,184,78,.2);line-height:1.6}
+.unlock-comment{position:relative;font-size:16px;font-weight:700;color:#5A3A00;margin:16px 0 6px;padding:18px 16px 14px;background:linear-gradient(160deg,#FFF8E0,#FFFAF0,#FFF5E6);border-radius:14px;border:2px solid #E8C84E;line-height:1.6;box-shadow:inset 0 1px 3px rgba(232,184,78,.12),0 2px 8px rgba(232,184,78,.1)}
+.unlock-comment::before{content:'👑';position:absolute;top:-12px;left:50%;transform:translateX(-50);font-size:18px;background:linear-gradient(160deg,#FFF8E0,#FFFAF0);padding:0 6px;border-radius:50%}
+@media(prefers-color-scheme:dark){.unlock-comment{background:linear-gradient(160deg,#2A2418,#28201A,#2A2218);color:#F0D888;border-color:#C09838}
+.unlock-comment::before{background:linear-gradient(160deg,#2A2418,#28201A)}}
 .unlock-congrats{font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--c),#E8B84E,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:6px;letter-spacing:.5px}
 
 /* Price input in upload */
