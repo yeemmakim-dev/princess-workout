@@ -696,7 +696,7 @@ function renderReward(){
     }
 
     if(count>0){
-      var comment=unlocked?getSafeComment(100,count):(getRoyalComment(count));
+      var comment=unlocked?getSafeComment(100,count):(S.lastComment||getRoyalComment(count));
       h+='<div class="safe-comment">💬 '+comment+'</div>';
     }
 
@@ -990,6 +990,7 @@ function showCompletePopup(routine){
 function showCompletePopupCustom(label, pctGain, count){
   var streak=getStreak();
   var comment=getRoyalComment(count);
+  S.lastComment=comment;save();
   var isUnlock=count>=GOAL;
   var h='<div class="complete-popup" onclick="if(event.target===this)closeCompletePopup()">';
   if(isUnlock){
