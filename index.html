@@ -218,6 +218,20 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 .complete-btn{margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--c),var(--c4));color:#fff;border:none;border-radius:16px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;width:100%;box-shadow:0 4px 15px rgba(255,105,180,.3);transition:transform .15s}
 .complete-btn:active{transform:scale(.92)}
 
+/* Unlock popup — 20/20 */
+.unlock-box{background:linear-gradient(150deg,#FFF8E8,#FFF0F8,#F8EAFF)!important;border:3px solid #E8B84E;box-shadow:0 10px 50px rgba(232,184,78,.3),0 0 80px rgba(255,105,180,.15)!important;padding:32px 24px!important}
+@media(prefers-color-scheme:dark){.unlock-box{background:linear-gradient(150deg,#2A2218,#2A1A28,#241A30)!important;border-color:#C09838}}
+.unlock-crown{font-size:56px;animation:floaty 2s ease-in-out infinite;margin-bottom:4px}
+.unlock-title{font-size:28px!important;font-weight:900!important;background:linear-gradient(135deg,#E8B84E,#FFD700,#E8B84E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;margin-bottom:8px!important}
+.unlock-seal{font-size:48px;margin:8px 0;animation:jelly 1s ease}
+.unlock-label{font-size:14px;color:var(--tm);margin:8px 0}
+.unlock-label b{color:var(--c);font-weight:700}
+.unlock-stats{display:flex;justify-content:center;gap:16px;margin:12px 0}
+.unlock-stat{font-size:13px;color:var(--tm);padding:6px 14px;background:rgba(232,184,78,.1);border-radius:12px;border:1px solid rgba(232,184,78,.25)}
+.unlock-stat b{color:#C08828;font-weight:900}
+.unlock-comment{font-size:16px;font-weight:700;color:var(--tx);margin:16px 0 6px;padding:14px;background:rgba(232,184,78,.08);border-radius:14px;border:1.5px solid rgba(232,184,78,.2);line-height:1.6}
+.unlock-congrats{font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--c),#E8B84E,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:6px;letter-spacing:.5px}
+
 /* Price input in upload */
 .price-row{display:flex;align-items:center;gap:8px;margin-top:12px;justify-content:center}
 .price-row input{width:120px;border:2.5px solid var(--c3);border-radius:12px;padding:8px 10px;font-size:14px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit}
@@ -601,11 +615,14 @@ var SAFE_COMMENTS_LOCKED=[
   '공주님의 꾸준함에 감동 중...'
 ];
 var SAFE_COMMENTS_APPROVED=[
-  '이제 사도 아무도 뭐라 안 함.',
+  '"이제 사도 아무도 뭐라 안 함" 인증서 발급',
   '공주님의 꾸준함이 이 소비를 정당화했습니다.',
+  '봉인 해제 완료! 데려오세요.',
   '이 아이템은 이제 공주님의 것입니다.',
   '오늘부터 이건 사치가 아니라 보상입니다.',
-  '장바구니 말고 이제 진짜 데려오세요.'
+  '왕실도 인정한 정당한 소비예요.',
+  '공주님의 성실함이 결국 왕실을 설득했어요.',
+  '이 정도면 누구나 고개를 끄덕일 만한 보상이에요.'
 ];
 function getSafeStage(pct){
   for(var i=0;i<SAFE_STAGES.length;i++){if(pct<=SAFE_STAGES[i].max)return SAFE_STAGES[i]}
@@ -976,22 +993,40 @@ function showCompletePopup(routine){
 function showCompletePopupCustom(label, pctGain, count){
   var streak=getStreak();
   var comment=getRoyalComment(count);
+  var isUnlock=count>=GOAL;
   var h='<div class="complete-popup" onclick="if(event.target===this)closeCompletePopup()">';
-  h+='<div class="complete-box">';
-  h+='<h3>👑 구매 심사 반영 완료!</h3>';
-  h+='<div class="complete-item"><b>'+label+'</b> 수련 완료</div>';
-  h+='<div class="complete-item">✨ 소비 정당화 게이지 <b>+'+pctGain+'%</b></div>';
-  h+='<div class="complete-item">🔥 연속 수련 <b>'+streak+'일째</b></div>';
-  h+='<div class="complete-item">📊 이번 달 <b>'+count+'/'+GOAL+'회</b> 완료</div>';
-  h+='<div class="complete-comment">💬 '+comment+'</div>';
-  h+='<div class="done-btns" style="margin-top:12px;display:flex;flex-direction:column;gap:5px">';
-  h+='<button class="btn-primary" style="padding:10px;font-size:13px" onclick="closeCompletePopup();nextRoutine(true)">바로 다음 하기 →</button>';
-  h+='<button class="btn-ghost" style="padding:8px;font-size:12px" onclick="closeCompletePopup();nextRoutine(false)">다음에 할게요 👋</button>';
-  h+='<button class="btn-skip" style="padding:6px;font-size:11px" onclick="closeCompletePopup();goBack()">↩ 되돌리기</button>';
-  h+='</div>';
+  if(isUnlock){
+    var approvedComment=SAFE_COMMENTS_APPROVED[Math.floor(Math.random()*SAFE_COMMENTS_APPROVED.length)];
+    h+='<div class="complete-box unlock-box">';
+    h+='<div class="unlock-crown">👑</div>';
+    h+='<h3 class="unlock-title">구매 허가 승인</h3>';
+    h+='<div class="unlock-seal">🏅</div>';
+    h+='<div class="unlock-label"><b>'+label+'</b> 수련 완료</div>';
+    h+='<div class="unlock-stats">';
+    h+='<div class="unlock-stat">🔥 연속 <b>'+streak+'일</b></div>';
+    h+='<div class="unlock-stat">📊 <b>'+count+'/'+GOAL+'회</b> 달성</div>';
+    h+='</div>';
+    h+='<div class="unlock-comment">'+approvedComment+'</div>';
+    h+='<div class="unlock-congrats">장바구니 말고 진짜 데려오세요!</div>';
+    h+='<button class="btn-skip" style="margin-top:14px;padding:6px;font-size:11px" onclick="closeCompletePopup();goBack()">↩ 되돌리기</button>';
+  } else {
+    h+='<div class="complete-box">';
+    h+='<h3>👑 구매 심사 반영 완료!</h3>';
+    h+='<div class="complete-item"><b>'+label+'</b> 수련 완료</div>';
+    h+='<div class="complete-item">✨ 소비 정당화 게이지 <b>+'+pctGain+'%</b></div>';
+    h+='<div class="complete-item">🔥 연속 수련 <b>'+streak+'일째</b></div>';
+    h+='<div class="complete-item">📊 이번 달 <b>'+count+'/'+GOAL+'회</b> 완료</div>';
+    h+='<div class="complete-comment">💬 '+comment+'</div>';
+    h+='<div class="done-btns" style="margin-top:12px;display:flex;flex-direction:column;gap:5px">';
+    h+='<button class="btn-primary" style="padding:10px;font-size:13px" onclick="closeCompletePopup();nextRoutine(true)">바로 다음 하기 →</button>';
+    h+='<button class="btn-ghost" style="padding:8px;font-size:12px" onclick="closeCompletePopup();nextRoutine(false)">다음에 할게요 👋</button>';
+    h+='<button class="btn-skip" style="padding:6px;font-size:11px" onclick="closeCompletePopup();goBack()">↩ 되돌리기</button>';
+    h+='</div>';
+  }
   h+='</div></div>';
   document.getElementById('modal').innerHTML=h;
   showConfetti();
+  if(isUnlock) showConfetti();
 }
 function closeCompletePopup(){closeModal()}
 
