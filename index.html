@@ -244,6 +244,8 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 .confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1000}
 .confetti-piece{position:absolute;border-radius:3px;animation:confettiFall 3s ease-in forwards}
 @keyframes confettiFall{0%{opacity:1;transform:translateY(-20px) rotate(0deg) scale(1)}50%{opacity:1}100%{opacity:0;transform:translateY(100vh) rotate(1080deg) scale(.5)}}
+.confetti-piece.from-bottom{top:auto;bottom:0;animation:confettiRise 3s ease-in forwards}
+@keyframes confettiRise{0%{opacity:1;transform:translateY(20px) rotate(0deg) scale(1)}50%{opacity:1}100%{opacity:0;transform:translateY(-100vh) rotate(-1080deg) scale(.5)}}
 
 .hidden{display:none!important}
 
@@ -1019,8 +1021,8 @@ function showCompletePopupCustom(label, pctGain, count){
   }
   h+='</div></div>';
   document.getElementById('modal').innerHTML=h;
-  showConfetti();
-  if(isUnlock) showConfetti();
+  if(isUnlock){showConfetti();showConfetti(true);}
+  else showConfetti();
 }
 function closeCompletePopup(){closeModal()}
 
@@ -1183,11 +1185,11 @@ function saveCrop(){
   save();closeModal();render();toast('왕실 심사 접수 완료! 👑');
 }
 
-function showConfetti(){
+function showConfetti(fromBottom){
   var c=document.createElement('div');c.className='confetti';
   var colors=['#FF6B9D','#FFB3C6','#fbbf24','#a78bfa','#34d399','#60a5fa','#FF8FB1'];
   for(var i=0;i<50;i++){
-    var p=document.createElement('div');p.className='confetti-piece';
+    var p=document.createElement('div');p.className='confetti-piece'+(fromBottom?' from-bottom':'');
     p.style.left=Math.random()*100+'%';
     p.style.background=colors[Math.floor(Math.random()*colors.length)];
     p.style.animationDelay=Math.random()*1.2+'s';
