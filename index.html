@@ -905,17 +905,21 @@ var restTimer=null;
 var restEi=-1,restSi=-1;
 var restStart=0;
 var REST_SEC=60;
+var audioCtx=null;
+function playAlarm(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();var ctx=audioCtx;if(ctx.state==='suspended')ctx.resume();[0,0.2,0.4].forEach(function(t){var o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;o.type='sine';g.gain.setValueAtTime(0,ctx.currentTime+t);g.gain.linearRampToValueAtTime(0.3,ctx.currentTime+t+0.01);g.gain.linearRampToValueAtTime(0,ctx.currentTime+t+0.15);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.16);});}catch(e){}if(navigator.vibrate)navigator.vibrate([200,100,200,100,200]);}
 function startRest(ei,si){
   clearInterval(restTimer);
   restEi=ei;restSi=si;
   restStart=Date.now();
   requestWake();
+  if(!audioCtx){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}
   restTimer=setInterval(function(){
     var elapsed=Math.floor((Date.now()-restStart)/1000);
     if(elapsed>=REST_SEC){
       clearInterval(restTimer);
       updateRestUI(REST_SEC);
       restTimer=null;
+      playAlarm();
     } else {
       updateRestUI(elapsed);
     }
