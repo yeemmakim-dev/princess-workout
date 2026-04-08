@@ -906,7 +906,12 @@ var restEi=-1,restSi=-1;
 var restStart=0;
 var REST_SEC=60;
 var audioCtx=null;
-function playAlarm(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();var ctx=audioCtx;if(ctx.state==='suspended')ctx.resume();[0,0.2,0.4].forEach(function(t){var o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;o.type='sine';g.gain.setValueAtTime(0,ctx.currentTime+t);g.gain.linearRampToValueAtTime(0.3,ctx.currentTime+t+0.01);g.gain.linearRampToValueAtTime(0,ctx.currentTime+t+0.15);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.16);});}catch(e){}if(navigator.vibrate)navigator.vibrate([200,100,200,100,200]);}
+function playAlarm(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();var ctx=audioCtx;if(ctx.state==='suspended')ctx.resume();
+// 샤라랑 — 반짝이는 아르페지오 + 벨
+var notes=[1568,2093,2637,3136,2637,3136,2093,2637];
+notes.forEach(function(f,i){var t=i*0.08;var o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=f;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0,ctx.currentTime+t);g.gain.linearRampToValueAtTime(0.15,ctx.currentTime+t+0.01);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.4);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.42);
+var o2=ctx.createOscillator(),g2=ctx.createGain();o2.type='sine';o2.frequency.value=f*2;o2.connect(g2);g2.connect(ctx.destination);g2.gain.setValueAtTime(0,ctx.currentTime+t);g2.gain.linearRampToValueAtTime(0.05,ctx.currentTime+t+0.01);g2.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.3);o2.start(ctx.currentTime+t);o2.stop(ctx.currentTime+t+0.32);});
+}catch(e){}if(navigator.vibrate)navigator.vibrate([80,60,80,60,80,60,80]);}
 function startRest(ei,si){
   clearInterval(restTimer);
   restEi=ei;restSi=si;
