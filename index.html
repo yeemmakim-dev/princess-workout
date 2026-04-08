@@ -897,7 +897,8 @@ function drawChart(){
 var wakeLock=null;
 function requestWake(){if('wakeLock' in navigator)navigator.wakeLock.request('screen').then(function(l){wakeLock=l;l.addEventListener('release',function(){wakeLock=null;});}).catch(function(){});}
 function releaseWake(){if(wakeLock){wakeLock.release();wakeLock=null;}}
-document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'&&restTimer)requestWake();});
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')requestWake();});
+requestWake();
 
 // --- Rest timer ---
 var restTimer=null;
@@ -915,7 +916,6 @@ function startRest(ei,si){
       clearInterval(restTimer);
       updateRestUI(REST_SEC);
       restTimer=null;
-      releaseWake();
     } else {
       updateRestUI(elapsed);
     }
