@@ -1177,17 +1177,18 @@ function addExtraByName(name,sets,reps){
   toast(name+' 추가! 💪');
 }
 function goBack(){
-  if(S.idx>0){
-    S.idx--;S.sets={};S.cardioChoice=null;
-    if(S.history.length>0){
-      var last=S.history[S.history.length-1];
-      var now=new Date();
-      if(last.year===now.getFullYear()&&last.month===now.getMonth()&&last.day===now.getDate()){
-        S.history.pop();
-      }
+  // 오늘 추가된 history 마지막 항목 제거 (idx와 무관하게)
+  var popped=false;
+  if(S.history.length>0){
+    var last=S.history[S.history.length-1];
+    var now=new Date();
+    if(last.year===now.getFullYear()&&last.month===now.getMonth()&&last.day===now.getDate()){
+      S.history.pop();popped=true;
     }
-    save();render();toast('되돌렸어요! ↩');
   }
+  if(S.idx>0){S.idx--;}
+  S.sets={};S.cardioChoice=null;
+  save();render();toast(popped?'되돌렸어요! ↩':'되돌릴 게 없어요');
 }
 
 // --- Complete Popup ---
