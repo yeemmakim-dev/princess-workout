@@ -267,6 +267,7 @@ body{font-family:'Gowun Batang','Noto Sans KR',-apple-system,sans-serif;backgrou
 <button class="tab active" onclick="switchTab(0)"><span class="tab-icon">👸</span>수련</button>
 <button class="tab" onclick="switchTab(1)"><span class="tab-icon">📅</span>왕실 출석부</button>
 <button class="tab" onclick="switchTab(2)"><span class="tab-icon">🏛️</span>기록 보관함</button>
+<button class="tab" onclick="switchTab(3)"><span class="tab-icon">⚙️</span>설정</button>
 </div></div>
 <script>
 // --- Royal Comments ---
@@ -378,22 +379,59 @@ function pickRandom(arr,n,rng){
   for(var i=0;i<n&&a.length;i++){var idx=Math.floor(rng()*a.length);res.push(a.splice(idx,1)[0])}
   return res;
 }
+function _prevStrengthNames(idx){
+  // look back at most 2 steps for previous strength routine
+  for(var back=2;back<=4;back+=2){
+    var pi=idx-back;
+    if(pi<0)return [];
+    if(CYCLE_PATTERN[((pi%5)+5)%5]==='strength'){
+      var pseed=pi*7919+31;
+      var prng=seededRand(pseed);
+      var pbase=[
+        pickRandom(POOL.compound,1,prng)[0],
+        pickRandom(POOL.hinge,1,prng)[0],
+        pickRandom(prng()<0.5?POOL.pull:POOL.push,1,prng)[0],
+        pickRandom(POOL.core,1,prng)[0]
+      ];
+      return pbase.map(function(ex,i){
+        var key=pi+'_'+i;
+        if(S.swapped&&S.swapped[key])return S.swapped[key].name;
+        return ex.name;
+      });
+    }
+  }
+  return [];
+}
 function generateRoutine(idx){
   var seed=idx*7919+31;
   var rng=seededRand(seed);
   var labels=['A','C','B'];
   var icons=['👸','🌸','💎'];
   var li=idx%3;
-  var base=[
-    pickRandom(POOL.compound,1,rng)[0],
-    pickRandom(POOL.hinge,1,rng)[0],
-    pickRandom(rng()<0.5?POOL.pull:POOL.push,1,rng)[0],
-    pickRandom(POOL.core,1,rng)[0]
-  ];
+  var prevNames=_prevStrengthNames(idx);
+  function exclude(pool){
+    var f=pool.filter(function(e){return prevNames.indexOf(e.name)===-1});
+    return f.length?f:pool;
+  }
+  var compound=pickRandom(exclude(POOL.compound),1,rng)[0];
+  var hinge=pickRandom(exclude(POOL.hinge),1,rng)[0];
+  var isPull=rng()<0.5;
+  var pp=pickRandom(exclude(isPull?POOL.pull:POOL.push),1,rng)[0];
+  var core=pickRandom(exclude(POOL.core),1,rng)[0];
+  var base=[compound,hinge,pp,core];
+  var cfg=S.config||{sets:3,reps:10,coreSets:2,coreReps:10};
   var exercises=base.map(function(ex,i){
     var key=idx+'_'+i;
-    if(S.swapped&&S.swapped[key]){return S.swapped[key]}
-    return ex;
+    var chosen=(S.swapped&&S.swapped[key])?S.swapped[key]:ex;
+    var out={};for(var k in chosen)out[k]=chosen[k];
+    if(i===3){
+      out.sets=cfg.coreSets;
+      if(typeof out.reps!=='string')out.reps=cfg.coreReps;
+    } else {
+      out.sets=cfg.sets;
+      if(typeof out.reps!=='string')out.reps=cfg.reps;
+    }
+    return out;
   });
   return {
     type:'strength',
@@ -413,7 +451,11 @@ function generateCardio(idx){
   var seed=idx*4219+17;
   var rng=seededRand(seed);
   var pick=CARDIO_OPTIONS[Math.floor(rng()*CARDIO_OPTIONS.length)];
-  return {type:'cardio',name:pick.name,icon:'🏃‍♀️',short:'유산소',dur:pick.dur,desc:pick.desc};
+  var dur=pick.dur;
+  if(S.config&&S.config.cardioDurs&&S.config.cardioDurs[pick.name]){
+    dur=S.config.cardioDurs[pick.name]+'분';
+  }
+  return {type:'cardio',name:pick.name,icon:'🏃‍♀️',short:'유산소',dur:dur,desc:pick.desc};
 }
 
 var CYCLE_PATTERN=['strength','cardio','strength','cardio','strength'];
@@ -436,6 +478,8 @@ if(!S.swapped)S.swapped={};
 if(!S.extras)S.extras=[];
 if(!S.customPool)S.customPool=[];
 if(!S.streak)S.streak=0;
+if(!S.config)S.config={sets:3,reps:10,coreSets:2,coreReps:10,cardioDurs:{}};
+if(!S.config.cardioDurs)S.config.cardioDurs={};
 var curTab=0;
 var calYear,calMonth;
 (function(){var d=new Date();calYear=d.getFullYear();calMonth=d.getMonth()})();
@@ -487,7 +531,8 @@ function switchTab(n){
 function render(){
   if(curTab===0)renderWorkout();
   else if(curTab===1)renderCalendar();
-  else renderWeight();
+  else if(curTab===2)renderWeight();
+  else renderSettings();
 }
 
 function renderWorkout(){
@@ -845,6 +890,65 @@ function saveWt(){
   var now=new Date();
   S.weights.push({kg:v,date:(now.getFullYear())+'.'+(now.getMonth()+1)+'.'+now.getDate()});
   save();renderWeight();toast(v+'kg 저장!');
+}
+function renderSettings(){
+  var c=S.config||{sets:3,reps:10,coreSets:2,coreReps:10,cardioDurs:{}};
+  var durs=c.cardioDurs||{};
+  var h='<div class="header"><h1>⚙️ 공주 설정</h1><div class="routine-label">수련 강도를 정해보세요</div></div>';
+  // 일반 운동
+  h+='<div style="margin:14px 0;padding:18px;background:linear-gradient(150deg,var(--sf),var(--sf2));border:2.5px solid var(--c3);border-radius:var(--r2);box-shadow:var(--glow)">';
+  h+='<div style="font-size:17px;font-weight:900;color:#FF69B4;text-align:center;letter-spacing:1px;margin-bottom:14px">💪 일반 운동</div>';
+  h+='<div style="font-size:11px;color:var(--tm);text-align:center;margin-bottom:10px">컴파운드 / 힌지 / 푸시 / 풀</div>';
+  h+='<div style="display:flex;gap:12px;align-items:center">';
+  h+='<div style="flex:1;display:flex;align-items:center;gap:6px"><label style="font-size:12px;color:var(--tx);white-space:nowrap;font-weight:700">세트</label>';
+  h+='<input type="number" id="cfg-sets" value="'+c.sets+'" min="1" max="10" style="flex:1;border:2.5px solid var(--c3);border-radius:12px;padding:8px;font-size:14px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit"></div>';
+  h+='<div style="flex:1;display:flex;align-items:center;gap:6px"><label style="font-size:12px;color:var(--tx);white-space:nowrap;font-weight:700">횟수</label>';
+  h+='<input type="number" id="cfg-reps" value="'+c.reps+'" min="1" max="50" style="flex:1;border:2.5px solid var(--c3);border-radius:12px;padding:8px;font-size:14px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit"></div>';
+  h+='</div></div>';
+  // 코어 운동
+  h+='<div style="margin:14px 0;padding:18px;background:linear-gradient(150deg,var(--sf),var(--sf2));border:2.5px solid var(--c3);border-radius:var(--r2);box-shadow:var(--glow)">';
+  h+='<div style="font-size:17px;font-weight:900;color:#FF69B4;text-align:center;letter-spacing:1px;margin-bottom:14px">🌸 코어 운동</div>';
+  h+='<div style="display:flex;gap:12px;align-items:center">';
+  h+='<div style="flex:1;display:flex;align-items:center;gap:6px"><label style="font-size:12px;color:var(--tx);white-space:nowrap;font-weight:700">세트</label>';
+  h+='<input type="number" id="cfg-core-sets" value="'+c.coreSets+'" min="1" max="10" style="flex:1;border:2.5px solid var(--c3);border-radius:12px;padding:8px;font-size:14px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit"></div>';
+  h+='<div style="flex:1;display:flex;align-items:center;gap:6px"><label style="font-size:12px;color:var(--tx);white-space:nowrap;font-weight:700">횟수</label>';
+  h+='<input type="number" id="cfg-core-reps" value="'+c.coreReps+'" min="1" max="50" style="flex:1;border:2.5px solid var(--c3);border-radius:12px;padding:8px;font-size:14px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit"></div>';
+  h+='</div></div>';
+  // 유산소별 시간
+  h+='<div style="margin:14px 0;padding:18px;background:linear-gradient(150deg,var(--sf),var(--sf2));border:2.5px solid var(--c3);border-radius:var(--r2);box-shadow:var(--glow)">';
+  h+='<div style="font-size:17px;font-weight:900;color:#FF69B4;text-align:center;letter-spacing:1px;margin-bottom:14px">🏃‍♀️ 유산소별 시간</div>';
+  CARDIO_OPTIONS.forEach(function(cc){
+    var defMin=parseInt(cc.dur)||25;
+    var curVal=durs[cc.name]||defMin;
+    h+='<div style="display:flex;align-items:center;gap:8px;padding:6px 0">';
+    h+='<span style="font-size:13px;flex:1;font-weight:600;color:var(--tx)">'+cc.icon+' '+cc.name+'</span>';
+    h+='<input type="number" data-cardio-name="'+cc.name+'" value="'+curVal+'" min="5" max="120" style="width:64px;border:2.5px solid var(--c3);border-radius:12px;padding:6px;font-size:13px;text-align:center;background:var(--bg);color:var(--tx);font-family:inherit">';
+    h+='<span style="font-size:12px;color:var(--tm);font-weight:600">분</span>';
+    h+='</div>';
+  });
+  h+='</div>';
+  h+='<button class="btn-primary" onclick="saveConfig()" style="margin-top:8px">💾 설정 저장 👑</button>';
+  document.getElementById('app').innerHTML=h;
+}
+function saveConfig(){
+  var s=parseInt(document.getElementById('cfg-sets').value)||3;
+  var r=parseInt(document.getElementById('cfg-reps').value)||10;
+  var cs=parseInt(document.getElementById('cfg-core-sets').value)||2;
+  var cr=parseInt(document.getElementById('cfg-core-reps').value)||10;
+  var durs={};
+  document.querySelectorAll('[data-cardio-name]').forEach(function(el){
+    var name=el.getAttribute('data-cardio-name');
+    var v=parseInt(el.value)||25;
+    durs[name]=Math.max(5,Math.min(120,v));
+  });
+  S.config={
+    sets:Math.max(1,Math.min(10,s)),
+    reps:Math.max(1,Math.min(50,r)),
+    coreSets:Math.max(1,Math.min(10,cs)),
+    coreReps:Math.max(1,Math.min(50,cr)),
+    cardioDurs:durs
+  };
+  save();render();toast('설정 저장 완료! 👑');
 }
 function drawChart(){
   var canvas=document.getElementById('wtCanvas');
